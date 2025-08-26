@@ -1,0 +1,6 @@
+chamber_of_lies Chamber of Lies
+You find yourself in a small, high-ceilinged room with windows at the top of three of the four walls. Inside the chamber, you find many objects with deceitful signs. A mysterious piece of machinery on a pallet states that it will have been moved many months ago. A machine with a prominent "do not sand wood" sign sits covered in sawdust. A ladder is spray painted with "WEAN PENT" in bold block letters. Above your head on the other side of a wall of many windows, you observe a sign stating this room is the "Claire and John Bertucci Nanotechnology Laboratory", which it is not. On this wall, to your west, a large pair of glass doors leads out into a courtyard with a flat concrete ground. To your east, a door sits atop a short run of steps, embedded in a concrete wall filled with holes. To your north is a corridor.
+west cursed_courtyard
+east wean.stairs.c2.4
+up wean.stairs.c2.4
+north scott.4_south.corridor_south
