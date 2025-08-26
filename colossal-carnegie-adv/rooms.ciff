@@ -296,7 +296,7 @@ This is a small enclosed outdoor space with a concrete floor, under the Scaife w
 south ansys.c.courtyard_hallway "You manage to get through the door, only after making a considerable racket."
 west techspark "You manage to get through the door, only after making a considerable racket."
 north "The doors are locked."
-east scott.4_south.south
+east scott.4_south.chamber_of_lies
 up scaife_walkway "You climb a pillar."
 
 scaife_quad Scaife Quad

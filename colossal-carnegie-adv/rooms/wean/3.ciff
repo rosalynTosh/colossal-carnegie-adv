@@ -1,40 +1,33 @@
-north Wean 3 Lobby North
-Stairs go up and down. Hallways go in various directions.
-west wean.3.200
-east wean.3.300
-south wean.3.south
-up wean.4.north
-down wean.2.north
-
-south Wean 3 Lobby South
-Hallways go in various directions, including to your south.
-south wean.3.500
-north wean.3.north
-east wean.3.400
+lobby Wean 3 Lobby
+Stairs go up and down. Hallways go in various directions, including to your south.
 west wean.3.100
-up wean.4.south
-down wean.2.south
+northwest wean.3.200
+northeast wean.3.300
+east wean.3.400
+south wean.3.500
+up wean.4.lobby
+down wean.2.lobby
 
 100 Wean 3100 Corridor
 You're in an uninteresting corridor west of the lobby, with strangely white walls. A hallway to your north cuts through to the 3200 corridor.
 north wean.3.200
 south wean.stairs.d.3
-east wean.3.south
+east wean.3.lobby
 
 200 Wean 3200 Corridor
 You're in an uninteresting corridor west of the lobby, which joins with the 3100 hallway further to your west.
 west wean.3.100
-east wean.3.north
+east wean.3.lobby
 
 300 Wean 3300 Corridor
 You're in an uninteresting corridor east of the lobby. Further to your east, a pair of glass doors leads to a balcony outside.
 north wean.stairs.a2.3
-west wean.3.north
+west wean.3.lobby
 east wean.3.300east
 
 400 Wean 3400 Corridor
 You're in an uninteresting corridor east of the lobby.
-west wean.3.south
+west wean.3.lobby
 south wean.stairs.b.3
 
 300east Wean 3300 Corridor
@@ -52,7 +45,7 @@ NOTE implement drop down from north or south side
 You're in a short L-shaped corridor south of the lobby. Further south is the 3600 corridor, and to your east is the 3700 corridor.
 south wean.3.600
 east wean.3.700
-north wean.3.south
+north wean.3.lobby
 
 600 Wean 3600 Corridor
 You're in the northern half of a corridor, deep under the mall. A pair of wooden swinging doors to your south continues further into the 3600 corridor, while a pair of double doors to your north go to the 3500 corridor. A push-door to a staircase is to your west.
