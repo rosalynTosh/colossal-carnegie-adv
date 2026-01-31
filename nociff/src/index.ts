@@ -1,8 +1,9 @@
 import { Player } from "./player";
+import { ROOMS_OBJ } from "./rooms";
 import { World } from "./world";
 
-const world = new World([{ print: () => "world room", dirs: {} }]);
-const player = new Player(world, { print: () => "player room", dirs: { west: { type: "goto", roomId: "mrrp" } } });
+const world = new World(Object.values(ROOMS_OBJ));
+const player = new Player(world, ROOMS_OBJ.mall);
 
 const history = document.getElementById("history") as HTMLDivElement;
 const inputCont = document.getElementById("input-cont") as HTMLSpanElement;

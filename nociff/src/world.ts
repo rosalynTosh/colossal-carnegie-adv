@@ -6,8 +6,8 @@ export class World {
     constructor(roomsList: Room[]) {
         this.rooms = new Map();
 
-        for (const [i, room] of roomsList.entries()) {
-            this.rooms.set(i.toString(), room);
+        for (const room of roomsList) {
+            this.rooms.set(room.id, room);
         }
     }
 
