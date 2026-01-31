@@ -16,6 +16,11 @@ body {
     word-break: break-word;
 }
 
+#history .fault {
+    color: #d65c5c;
+    font-weight: bold;
+}
+
 #input-cont {
     white-space: pre-wrap;
     word-break: break-all;

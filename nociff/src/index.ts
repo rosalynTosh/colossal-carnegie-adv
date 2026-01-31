@@ -1,8 +1,8 @@
 import { Player } from "./player";
 import { World } from "./world";
 
-const world = new World();
-const player = new Player(world);
+const world = new World([{ print: () => "world room", dirs: {} }]);
+const player = new Player(world, { print: () => "player room", dirs: { west: { type: "goto", roomId: "mrrp" } } });
 
 const history = document.getElementById("history") as HTMLDivElement;
 const inputCont = document.getElementById("input-cont") as HTMLSpanElement;
@@ -102,7 +102,16 @@ input.addEventListener("input", () => {
 input.addEventListener("keydown", (event) => {
     if (event.code == "Enter") {
         const output = player.runUserInput(input.value);
-        history.textContent += "\n\n>" + input.value + (output ? "\n" + output : "");
+        history.appendChild(document.createTextNode("\n\n>" + input.value));
+        
+        if (output != "" && output[0] == "\xff") {
+            const span = document.createElement("span");
+            span.textContent = "\n" + output.slice(1);
+            span.classList.add("fault");
+            history.appendChild(span);
+        } else {
+            history.appendChild(document.createTextNode("\n" + output));
+        }
 
         input.value = "";
         updatePromptInput();
