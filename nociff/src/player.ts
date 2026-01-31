@@ -1,4 +1,4 @@
-import { Dir, Room } from "./room";
+import { Dir, Room } from "./rooms";
 import { World } from "./world";
 
 const DIR_WORDS: { [word: string]: Dir } = {

@@ -1,4 +1,4 @@
-import { Room } from "./room";
+import { Room } from "./rooms";
 
 export class World {
     private rooms: Map<string, Room>;
