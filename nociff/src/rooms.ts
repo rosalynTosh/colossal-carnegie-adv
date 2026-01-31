@@ -1,3 +1,6 @@
+import { CAMPUS_ROOMS_OBJ } from "./rooms/campus";
+import { DOHERTY_ROOMS_OBJ } from "./rooms/doherty";
+
 export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northeast" | "northwest" | "southeast" | "southwest";
 
 export interface Room {
@@ -25,26 +28,34 @@ interface SayRoomDir {
 
 export type RoomDir = GotoRoomDir | DoorRoomDir | SayRoomDir;
 
+export function goto(roomId: string): RoomDir {
+    return {
+        type: "goto",
+        roomId
+    };
+}
+
+export function say(say: string): RoomDir {
+    return {
+        type: "say",
+        say
+    };
+}
+
+export function basicRoom(id: string, short: string, long: string, dirs: Room["dirs"]): Room {
+    return {
+        id,
+
+        print: () => short + "\n" + long,
+
+        dirs
+    };
+}
+
 export const ROOMS_OBJ = {
-    mall: {
-        id: "mall",
+    ...CAMPUS_ROOMS_OBJ,
 
-        print: () => "mall",
-
-        dirs: {
-            north: { type: "goto", roomId: "doherty.1.west" }
-        }
-    },
-    doherty_1_west: {
-        id: "doherty.1.west",
-
-        print: () => "doherty.1.west",
-
-        dirs: {
-            south: { type: "goto", roomId: "mall" },
-            up: { type: "goto", roomId: "doherty.2.west" }
-        }
-    }
+    ...DOHERTY_ROOMS_OBJ
 } as const satisfies { [id: string]: Room };
 
 for (const roomId in ROOMS_OBJ) {
