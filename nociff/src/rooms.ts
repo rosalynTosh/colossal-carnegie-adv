@@ -1,5 +1,7 @@
-import { CAMPUS_ROOMS_OBJ } from "./rooms/campus";
-import { DOHERTY_ROOMS_OBJ } from "./rooms/doherty";
+import { CAMPUS_ROOMS } from "./rooms/campus";
+import { DOHERTY_ROOMS } from "./rooms/doherty";
+import { LIMINAL_ROOMS } from "./rooms/liminal";
+import { WEAN_ROOMS } from "./rooms/wean";
 
 export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northeast" | "northwest" | "southeast" | "southwest";
 
@@ -52,16 +54,18 @@ export function basicRoom(id: string, short: string, long: string, dirs: Room["d
     };
 }
 
-export const ROOMS_OBJ = {
-    ...CAMPUS_ROOMS_OBJ,
+export const ROOMS: Room[] = [
+    ...CAMPUS_ROOMS,
 
-    ...DOHERTY_ROOMS_OBJ
-} as const satisfies { [id: string]: Room };
+    ...DOHERTY_ROOMS,
+    ...LIMINAL_ROOMS,
+    ...WEAN_ROOMS
+];
 
-for (const roomId in ROOMS_OBJ) {
-    const room: Room = ROOMS_OBJ[roomId as keyof typeof ROOMS_OBJ];
-
-    if (roomId.replace(/_/g, ".") !== room.id) {
-        throw new Error("roomId mismatch for '" + roomId + "' vs. '" + room.id + "'");
+for (let i = 1; i < ROOMS.length; i++) {
+    for (let j = 0; j < i; j++) {
+        if (ROOMS[i].id == ROOMS[j].id) {
+            throw new Error("duplicate roomId '" + ROOMS[i].id + " for indices " + i + ", " + j);
+        }
     }
 }

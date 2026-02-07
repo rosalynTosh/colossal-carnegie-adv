@@ -1,9 +1,9 @@
 import { Player } from "./player";
-import { ROOMS_OBJ } from "./rooms";
+import { ROOMS } from "./rooms";
 import { World } from "./world";
 
-const world = new World(Object.values(ROOMS_OBJ));
-const player = new Player(world, ROOMS_OBJ.mall);
+const world = new World(ROOMS);
+const player = new Player(world, world.findRoom("mall")!);
 
 const history = document.getElementById("history") as HTMLDivElement;
 const inputCont = document.getElementById("input-cont") as HTMLSpanElement;
