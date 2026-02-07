@@ -31,7 +31,150 @@ export const DOHERTY_ROOMS: Room[] = [
 
     // Doherty B
 
+    dohertyRoom("b.art_hall", {
+        north: goto("doherty.b.monitor_desk"),
+        east: goto("doherty.b.first_year_studio"),
+        south: goto("doherty.b.mall_side_corridor.mural"),
+        west: goto("doherty.b.upper_class_studios"),
+        down: goto("doherty.c.stairs"),
+        up: goto("doherty.a.west")
+    }),
+    dohertyRoom("b.chem_e_hall", {
+        north: goto("doherty.b.chem_e"),
+        east: goto("doherty.b.woodshop"),
+        south: goto("doherty.b.mall_side_corridor.chem_e"),
+        up: goto("doherty.a.stairs")
+    }),
+    dohertyRoom("b.mall_side_corridor.steam_tunnels", {
+        northeast: goto("doherty.b.under_stairs.art"),
+        east: goto("doherty.b.mall_side_corridor.mural"),
+        west: goto("liminal.ramp"),
+        down: goto("doherty.c.steam_tunnel.west")
+    }),
+    dohertyRoom("b.mall_side_corridor.mural", {
+        north: goto("doherty.b.art_hall"),
+        east: goto("doherty.b.mall_side_corridor.pipes"),
+        west: goto("doherty.b.mall_side_corridor.steam_tunnels"),
+        up: goto("doherty.b.pipes.mural")
+    }),
+    dohertyRoom("b.mall_side_corridor.pipes", {
+        northeast: goto("doherty.b.under_stairs.chem_e"),
+        east: goto("doherty.mall_side_corridor.chem_e"),
+        south: goto("doherty.b.mall_side_corridor.plinth", "You climb up onto the plinth."),
+        up: goto("doherty.b.mall_side_corridor.plinth", "You climb up onto the plinth."),
+        west: goto("doherty.b.mall_side_corridor.mural")
+    }),
+    dohertyRoom("b.mall_side_corridor.plinth", {
+        up: goto("doherty.b.pipes.closets"),
+        north: goto("doherty.b.mall_side_corridor.pipes"),
+        down: goto("doherty.b.mall_side_corridor.pipes")
+    }),
+    dohertyRoom("b.mall_side_corridor.chem_e", {
+        north: goto("doherty.b.chem_e_hall"),
+        east: goto("doherty.b.mall_side_corridor.warm_stairs"),
+        west: goto("doherty.b.mall_side_corridor.pipes")
+    }),
+    dohertyRoom("b.mall_side_corridor.warm_stairs", {
+        east: goto("doherty.b.cold_corridor"),
+        southeast: goto("doherty.b.locker_room"),
+        south: goto("doherty.warm_stairs.b"),
+        west: goto("doherty.b.mall_side_corridor.chem_e")
+    }),
+    dohertyRoom("b.under_stairs.art", {
+        southwest: goto("doherty.b.mall_side_corridor.steam_tunnels"),
+        down: goto("doherty.b.under_stairs.art_lower")
+    }),
+    dohertyRoom("b.under_stairs.art_lower", {
+        up: goto("doherty.b.under_stairs.art")
+    }),
+    dohertyRoom("b.under_stairs.chem_e", {
+        southwest: goto("doherty.b.mall_side_corridor.pipes"),
+        down: goto("doherty.b.under_stairs.chem_e_lower")
+    }),
+    dohertyRoom("b.under_stairs.chem_e_lower", {
+        up: goto("doherty.b.under_stairs.chem_e")
+    }),
+    dohertyRoom("b.pipes.closets", {
+        west: goto("doherty.b.pipes.mural"),
+        down: goto("doherty.b.mall_side_corridor.plinth")
+    }),
+    dohertyRoom("b.pipes.mural", {
+        east: goto("doherty.b.pipes.closets"),
+        west: goto("doherty.b.pipes.inside_tunnel"),
+        northwest: goto("doherty.b.pipes.outside_tunnel"),
+        down: goto("doherty.b.mall_side_corridor.mural")
+    }),
+    dohertyRoom("b.pipes.outside_tunnel", {
+        southeast: goto("doherty.b.pipes.mural"),
+        south: goto("doherty.b.pipes.inside_tunnel")
+    }),
+    dohertyRoom("b.pipes.inside_tunnel", {
+        north: goto("doherty.b.pipes.outside_tunnel"),
+        east: goto("doherty.b.pipes.mural"),
+        down: goto("steam_tunnel.doherty")
+    }),
+    dohertyRoom("b.cold_corridor", {
+        north: goto("doherty_wilderness_patio"),
+        west: goto("doherty.b.mall_side_corridor.warm_stairs")
+    }),
+    dohertyRoom("b.upper_class_studios", {
+        east: goto("doherty.b.art_hall"),
+        south: goto("doherty.b.mall_side_corridor.steam_tunnels"),
+        up: goto("doherty.b.upper_class_studios.upper")
+    }),
+    dohertyRoom("b.upper_class_studios.upper", {
+        down: goto("doherty.b.upper_class_studios")
+    }),
+    dohertyRoom("b.first_year_studio", {
+        north: goto("doherty.b.roof"),
+        west: goto("doherty.b.art_hall")
+    }),
+    dohertyRoom("b.roof", {
+        south: goto("doherty.b.first_year_studio")
+    }),
+    dohertyRoom("b.monitor_desk", {
+        south: goto("doherty.b.art_hall"),
+        west: goto("doherty.b.cigarette_man")
+    }),
+    dohertyRoom("b.cigarette_man", {
+        north: goto("doherty.glass_stairs.b"),
+        east: goto("doherty.b.monitor_desk")
+    }),
+    dohertyRoom("b.woodshop", {
+        west: goto("doherty.b.chem_e_hall")
+    }),
+    dohertyRoom("b.locker_room", {
+        northwest: goto("doherty.b.mall_side_corridor.warm_stairs")
+    }),
+    dohertyRoom("b.chem_e", {
+        east: goto("doherty_wilderness_patio"),
+        south: goto("doherty.b.chem_e_hall"),
+        down: goto("doherty.c.chem_e"),
+        up: goto("doherty.a.chem_e")
+    }),
+
     // Doherty A
+
+    dohertyRoom("a.west", {
+        north: goto("doherty.a.physics_museum"),
+        east: goto("doherty.a.mid_corridor"),
+        south: goto("doherty.a.physics_lab"),
+        west: goto("liminal.ground"),
+        down: goto("doherty.b.art_hall"),
+        up: goto("doherty.1.west")
+    }),
+    dohertyRoom("a.mid_corridor", {
+        north: goto("doherty.a.mse_lab"),
+        east: goto("doherty.a.stairs"),
+        south: goto("doherty.a.physics_half_floor"),
+        west: goto("doherty.a.west")
+    }),
+    dohertyRoom("a.stairs", {
+        north: goto("doherty.a.chem_e"),
+        east: goto("doherty.a.jail"),
+        south: goto("doherty_mall_garden"),
+        west: goto("doherty.a.mid_corridor")
+    }),
 
     // Doherty 1
 

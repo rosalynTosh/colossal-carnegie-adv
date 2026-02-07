@@ -107,7 +107,7 @@ export class Player {
 
                 this.room = gotoRoom;
 
-                return gotoRoom.print();
+                return (roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print();
             }
             case "door": {
                 return "\xffFAULT: doors unimplemented";

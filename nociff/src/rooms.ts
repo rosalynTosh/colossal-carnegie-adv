@@ -16,6 +16,7 @@ export interface Room {
 interface GotoRoomDir {
     type: "goto";
     roomId: string;
+    say?: string | undefined;
 }
 
 interface DoorRoomDir {
@@ -30,10 +31,11 @@ interface SayRoomDir {
 
 export type RoomDir = GotoRoomDir | DoorRoomDir | SayRoomDir;
 
-export function goto(roomId: string): RoomDir {
+export function goto(roomId: string, say?: string): RoomDir {
     return {
         type: "goto",
-        roomId
+        roomId,
+        say
     };
 }
 
