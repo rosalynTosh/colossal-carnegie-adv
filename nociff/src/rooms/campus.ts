@@ -9,7 +9,19 @@ export const CAMPUS_ROOMS: Room[] = [
             west: goto("lower_mall"),
             north: goto("doherty.1.west_corridor"),
             south: goto("baker.1"),
-            east: goto("cfa_lawn")
+            east: goto("cfa_lawn"),
+            down: {
+                type: "door",
+
+                roomId: "steam_tunnel.under_mall",
+
+                doorId: "mall_trapdoor",
+
+                canOpen: false,
+                canClose: true,
+                closeOnUse: false,
+                keyItem: "square_tool"
+            }
         }
     ),
     basicRoom(

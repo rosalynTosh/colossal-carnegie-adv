@@ -137,7 +137,33 @@ export class Player {
                 return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print());
             }
             case "door": {
-                return fault("FAULT: doors unimplemented");
+                if (this.world.doorIsOpen(roomDir.doorId)) {
+                    const gotoRoom = this.world.findRoom(roomDir.roomId);
+
+                    if (gotoRoom === undefined) {
+                        return fault("FAULT: missing room " + roomDir.roomId);
+                    }
+
+                    const oldRoomId = this.room.id;
+
+                    this.room = gotoRoom;
+
+                    this.world.tick();
+
+                    if (roomDir.closeOnUse) {
+                        this.world.setDoorOpenState(roomDir.doorId, false);
+
+                        this.world.triggerFarnam(oldRoomId);
+                    }
+
+                    return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print());
+                } else {
+                    if (roomDir.sayIfClosed === undefined) {
+                        return output("The door is closed.");
+                    } else {
+                        return output(roomDir.sayIfClosed);
+                    }
+                }
             }
             case "say": {
                 return output(roomDir.say);

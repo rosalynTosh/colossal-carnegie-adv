@@ -1,9 +1,10 @@
+import { DOORS } from "./doors";
 import { formatStringToHTML } from "./formatting";
 import { Player } from "./player";
 import { ROOMS } from "./rooms";
 import { World } from "./world";
 
-const world = new World(ROOMS, ROOMS.find(r => r.id == "mall")!); // later: change this to warner 6
+const world = new World(ROOMS, DOORS, ROOMS.find(r => r.id == "mall")!); // later: change this to warner 6
 const player = new Player(world, world.findRoom("mall")!);
 
 const history = document.getElementById("history") as HTMLDivElement;

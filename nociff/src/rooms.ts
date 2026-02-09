@@ -22,7 +22,24 @@ interface GotoRoomDir {
 
 interface DoorRoomDir {
     type: "door";
+    
+    roomId: string;
+    say?: string | undefined;
+
     doorId: string;
+
+    canOpen: boolean;
+    canClose: boolean;
+    closeOnUse: boolean;
+    keyItem: string | null;
+
+    sayIfClosed?: string | undefined;
+    sayOnOpen?: string | undefined;
+    sayOnNoItem?: string | undefined;
+    sayOnWrongItem?: string | undefined;
+    sayOnAlreadyOpen?: string | undefined;
+    sayOnClose?: string | undefined;
+    sayOnAlreadyClosed?: string | undefined;
 }
 
 interface SayRoomDir {
