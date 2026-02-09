@@ -1,4 +1,5 @@
 import { FormatString } from "./formatting";
+import { Item } from "./items";
 import { CAMPUS_ROOMS } from "./rooms/campus";
 import { DOHERTY_ROOMS } from "./rooms/doherty";
 import { LIMINAL_ROOMS } from "./rooms/liminal";
@@ -12,6 +13,8 @@ export interface Room {
     print(): FormatString;
 
     dirs: { [dir in Dir]?: RoomDir };
+
+    items: Item[];
 }
 
 interface GotoRoomDir {
@@ -22,7 +25,7 @@ interface GotoRoomDir {
 
 interface DoorRoomDir {
     type: "door";
-    
+
     roomId: string;
     say?: string | undefined;
 
@@ -73,7 +76,9 @@ export function basicRoom(id: string, short: string, long: string, dirs: Room["d
             str: short + "\n" + long
         }],
 
-        dirs
+        dirs,
+
+        items: []
     };
 }
 

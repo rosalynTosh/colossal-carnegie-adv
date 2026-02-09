@@ -1,9 +1,12 @@
 import { Door } from "./doors";
 import { Farnam } from "./farnam";
+import { Item } from "./items";
 import { Room } from "./rooms";
 
 export class World {
     private rooms: Map<string, Room>;
+    private roomItems: Map<string, Item[]>;
+
     private doors: Map<string, Door>;
     private doorsOpen: Map<string, boolean>;
 
@@ -11,9 +14,11 @@ export class World {
 
     constructor(roomsList: Room[], doorsList: Door[], farnamInitRoom: Room) {
         this.rooms = new Map();
+        this.roomItems = new Map();
 
         for (const room of roomsList) {
             this.rooms.set(room.id, room);
+            this.roomItems.set(room.id, room.items);
         }
 
         this.doors = new Map();

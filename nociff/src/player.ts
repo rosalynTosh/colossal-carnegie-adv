@@ -1,4 +1,5 @@
 import { FormatString } from "./formatting";
+import { Item } from "./items";
 import { Dir, Room } from "./rooms";
 import { World } from "./world";
 
@@ -55,9 +56,16 @@ export class Player {
 
     private room: Room;
 
+    private inv: Item[];
+    private counters: Map<string, number>;
+
     constructor(world: World, initRoom: Room) {
         this.world = world;
+
         this.room = initRoom;
+
+        this.inv = [];
+        this.counters = new Map();
     }
 
     public initialPrintout(): FormatString {
@@ -169,5 +177,33 @@ export class Player {
                 return output(roomDir.say);
             }
         }
+    }
+
+    public getCounter(id: string): number {
+        return this.counters.get(id) ?? 0;
+    }
+
+    public incCounter(id: string, by: number = 1) {
+        this.counters.set(id, (this.counters.get(id) ?? 0) + by);
+    }
+
+    public setCounter(id: string, to: number) {
+        this.counters.set(id, to);
+    }
+
+    public addItem(item: Item) {
+        this.inv.push(item);
+    }
+
+    public hasItem(itemId: string): boolean {
+        return this.inv.some(i => i.id == itemId);
+    }
+
+    public deleteItem(itemId: string) {
+        const index = this.inv.findIndex(i => i.id == itemId);
+
+        if (index == -1) return;
+
+        this.inv = [...this.inv.slice(0, index), ...this.inv.slice(index + 1)];
     }
 }

@@ -19,7 +19,9 @@ export function dohertyRoom(id: string, dirs: Room["dirs"], long?: string, short
             str: short + "\nYou're somewhere inside Doherty Hall. " + longStr
         }],
 
-        dirs
+        dirs,
+
+        items: []
     };
 }
 
