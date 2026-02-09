@@ -1,8 +1,9 @@
+import { formatStringToHTML } from "./formatting";
 import { Player } from "./player";
 import { ROOMS } from "./rooms";
 import { World } from "./world";
 
-const world = new World(ROOMS);
+const world = new World(ROOMS, ROOMS.find(r => r.id == "mall")!); // later: change this to warner 6
 const player = new Player(world, world.findRoom("mall")!);
 
 const history = document.getElementById("history") as HTMLDivElement;
@@ -16,7 +17,7 @@ const input2 = document.getElementById("input-2") as HTMLSpanElement;
 
 const input = document.getElementById("input") as HTMLInputElement;
 
-history.textContent = player.initialPrintout();
+history.appendChild(formatStringToHTML(player.initialPrintout()));
 
 input.focus();
 
@@ -105,14 +106,7 @@ input.addEventListener("keydown", (event) => {
         const output = player.runUserInput(input.value);
         history.appendChild(document.createTextNode("\n\n>" + input.value));
         
-        if (output != "" && output[0] == "\xff") {
-            const span = document.createElement("span");
-            span.textContent = "\n" + output.slice(1);
-            span.classList.add("fault");
-            history.appendChild(span);
-        } else {
-            history.appendChild(document.createTextNode("\n" + output));
-        }
+        history.appendChild(formatStringToHTML([{ type: "output", str: "\n" }, ...output]));
 
         input.value = "";
         updatePromptInput();

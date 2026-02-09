@@ -1,3 +1,4 @@
+import { FormatString } from "./formatting";
 import { Dir, Room } from "./rooms";
 import { World } from "./world";
 
@@ -41,6 +42,14 @@ const DIR_WORDS: { [word: string]: Dir } = {
     "u": "up",
 } as const satisfies { [word: string]: Dir };
 
+function output(str: string): FormatString {
+    return [{ type: "output", str }];
+}
+
+function fault(str: string): FormatString {
+    return [{ type: "fault", str }];
+}
+
 export class Player {
     private world: World;
 
@@ -51,25 +60,37 @@ export class Player {
         this.room = initRoom;
     }
 
-    public initialPrintout(): string {
-        return "Colossal Carnegie Adventure I\n\n" + this.room.print();
+    public initialPrintout(): FormatString {
+        return [{ type: "output", str: "Colossal Carnegie Adventure I\n\n" }, ...this.room.print(), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
     }
 
-    public runUserInput(input: string): string {
+    public runUserInputInner(input: string): FormatString {
         const words = input.replace(/\s+/g, " ").trim().split(" ");
 
         if (words.length == 0 || words[0] == "") {
-            return "Come again?";
+            return output("Come again?");
         }
 
         const firstWord = words[0].toLowerCase();
 
         switch (firstWord) {
+            case "look":
+            case "l": {
+                return this.room.print();
+            }
+            case "pause":
+            case "still":
+            case "stay":
+            case "wait": {
+                this.world.tick();
+
+                return this.room.print();
+            }
             case "move":
             case "go":
             case "walk": {
                 if (words.length < 2 || words[1] == "") {
-                    return "Which way?";
+                    return output("Which way?");
                 }
 
                 const sndWord = words[1].toLowerCase();
@@ -78,23 +99,27 @@ export class Player {
                     return this.move(DIR_WORDS[sndWord]);
                 }
 
-                return "Don't know which way '" + words[1] + "' is";
+                return output("Don't know which way '" + words[1] + "' is");
             }
             default: {
                 if (firstWord in DIR_WORDS) {
                     return this.move(DIR_WORDS[firstWord]);
                 }
 
-                return "Don't know how to '" + words[0] + "'";
+                return output("Don't know how to '" + words[0] + "'");
             }
         }
     }
 
-    private move(dir: Dir): string {
+    public runUserInput(input: string): FormatString {
+        return [...this.runUserInputInner(input), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
+    }
+
+    private move(dir: Dir): FormatString {
         const roomDir = this.room.dirs[dir];
 
         if (roomDir === undefined) {
-            return "You cannot go " + dir + ".";
+            return output("You cannot go " + dir + ".");
         }
 
         switch (roomDir.type) {
@@ -102,18 +127,20 @@ export class Player {
                 const gotoRoom = this.world.findRoom(roomDir.roomId);
 
                 if (gotoRoom === undefined) {
-                    return "\xffFAULT: missing room " + roomDir.roomId;
+                    return fault("FAULT: missing room " + roomDir.roomId);
                 }
 
                 this.room = gotoRoom;
 
-                return (roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print();
+                this.world.tick();
+
+                return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print());
             }
             case "door": {
-                return "\xffFAULT: doors unimplemented";
+                return fault("FAULT: doors unimplemented");
             }
             case "say": {
-                return roomDir.say;
+                return output(roomDir.say);
             }
         }
     }

@@ -1,3 +1,4 @@
+import { FormatString } from "./formatting";
 import { CAMPUS_ROOMS } from "./rooms/campus";
 import { DOHERTY_ROOMS } from "./rooms/doherty";
 import { LIMINAL_ROOMS } from "./rooms/liminal";
@@ -8,7 +9,7 @@ export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northea
 export interface Room {
     id: string;
 
-    print(): string;
+    print(): FormatString;
 
     dirs: { [dir in Dir]?: RoomDir };
 }
@@ -50,7 +51,10 @@ export function basicRoom(id: string, short: string, long: string, dirs: Room["d
     return {
         id,
 
-        print: () => short + "\n" + long,
+        print: () => [{
+            type: "output",
+            str: short + "\n" + long
+        }],
 
         dirs
     };

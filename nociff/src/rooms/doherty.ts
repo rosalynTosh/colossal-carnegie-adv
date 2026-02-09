@@ -14,7 +14,10 @@ export function dohertyRoom(id: string, dirs: Room["dirs"], long?: string, short
     return {
         id: "doherty." + id,
 
-        print: () => short + "\nYou're somewhere inside Doherty Hall. " + longStr,
+        print: () => [{
+            type: "output",
+            str: short + "\nYou're somewhere inside Doherty Hall. " + longStr
+        }],
 
         dirs
     };
