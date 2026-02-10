@@ -22,6 +22,10 @@ history.appendChild(formatStringToHTML(player.initialPrintout()));
 
 input.focus();
 
+let initialInput: string = "";
+let inputHistory: string[] = [];
+let inputHistoryIndex: number | null = null;
+
 let blinkState = 0;
 let blinkInterval: ReturnType<typeof setInterval> | undefined;
 
@@ -76,8 +80,6 @@ function computeSelectionIndex(node: Node, nodeSelectionIndex: number): number {
 window.addEventListener("click", () => {
     const selection = window.getSelection()!;
 
-    console.log(selection);
-
     if (selection.isCollapsed) {
         if (inputCont.contains(selection.focusNode)) {
             const selectionIndex = computeSelectionIndex(selection.focusNode!, selection.focusOffset);
@@ -104,15 +106,58 @@ input.addEventListener("input", () => {
 
 input.addEventListener("keydown", (event) => {
     if (event.code == "Enter") {
+        if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey) return;
+
         const output = player.runUserInput(input.value);
         history.appendChild(document.createTextNode("\n\n>" + input.value));
         
         history.appendChild(formatStringToHTML([{ type: "output", str: "\n" }, ...output]));
 
+        if (input.value != "" && (inputHistory.length == 0 || inputHistory[inputHistory.length - 1] != input.value.trim())) {
+            inputHistory.push(input.value.trim());
+        }
+
+        inputHistoryIndex = null;
+
         input.value = "";
         updatePromptInput();
 
         window.scrollTo(0, document.body.scrollHeight);
+    } else if (event.code == "ArrowUp") {
+        if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey) return;
+
+        if (inputHistoryIndex === null) {
+            if (inputHistory.length != 0) {
+                initialInput = input.value;
+                input.value = inputHistory.length == 0 ? "" : inputHistory[inputHistory.length - 1];
+                updatePromptInput();
+                inputHistoryIndex = inputHistory.length - 1;
+
+                event.preventDefault();
+            }
+        } else if (inputHistoryIndex > 0) {
+            input.value = inputHistory[--inputHistoryIndex];
+            updatePromptInput();
+
+            event.preventDefault();
+        }
+    } else if (event.code == "ArrowDown") {
+        if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey) return;
+
+        if (inputHistoryIndex !== null) {
+            if (inputHistoryIndex == inputHistory.length - 1) {
+                input.value = initialInput;
+                updatePromptInput();
+                inputHistoryIndex = null;
+
+                event.preventDefault();
+            } else {
+                input.value = inputHistory[++inputHistoryIndex];
+                updatePromptInput();
+
+                event.preventDefault();
+            }
+        }
     }
 });
 
