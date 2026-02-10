@@ -1,6 +1,6 @@
 import { fault, FormatString, output } from "./formatting";
 import { Item } from "./items";
-import { Dir, Room } from "./rooms";
+import { Dir, Room, RoomDir } from "./rooms";
 import { World } from "./world";
 
 const DIR_WORDS: { [word: string]: Dir } = {
@@ -184,6 +184,13 @@ export class Player {
                     return output("I don't know how to 'put'. Did you want to say 'put down' ('drop' for short)?");
                 }
             }
+            case "open": {
+                return this.openDoor(words.slice(1));
+            }
+            case "close":
+            case "slam": {
+                return this.closeDoor(words.slice(1));
+            }
             default: {
                 if (firstWord in DIR_WORDS && words.length == 1) {
                     return this.move(DIR_WORDS[firstWord]);
@@ -300,6 +307,100 @@ export class Player {
         }
 
         return output("Can't find any '" + noun + "'.");
+    }
+
+    private openDoor(nounPhrase: string[]): FormatString {
+        const noun = nounPhrase.join(" ");
+
+        const roomDoors = [];
+        let door: RoomDir | undefined = undefined;
+
+        for (const dir in this.room.dirs) {
+            const roomDir = this.room.dirs[dir as keyof typeof this.room.dirs];
+
+            if (roomDir !== undefined && roomDir.type == "door") {
+                roomDoors.push(roomDir);
+
+                if (roomDir.doorNouns.includes(noun)) {
+                    door = roomDir;
+
+                    break;
+                }
+            }
+        }
+
+        if (noun == "" && roomDoors.length == 1) {
+            door = roomDoors[0];
+        }
+
+        if (door === undefined) {
+            if (noun == "" && roomDoors.length != 0) {
+                return output("What are you trying to open?");
+            } else if (noun == "") {
+                return output("Can't find any doors to open.");
+            } else {
+                return output("Can't find any '" + noun + "' to open.");
+            }
+        }
+
+        if (this.world.doorIsOpen(door.doorId)) {
+            return output(door.sayOnAlreadyOpen ?? "It's already open.");
+        }
+
+        if (!door.canOpen && (door.keyItem === null || !this.inv.some(i => i.id == door.keyItem))) {
+            return output(door.sayOnNoItem ?? "You can't open this door.");
+        }
+
+        this.world.setDoorOpenState(door.doorId, true);
+
+        return output(door.sayOnOpen ?? "You open it.");
+    }
+
+    private closeDoor(nounPhrase: string[]): FormatString {
+        const noun = nounPhrase.join(" ");
+
+        const roomDoors = [];
+        let door: RoomDir | undefined = undefined;
+
+        for (const dir in this.room.dirs) {
+            const roomDir = this.room.dirs[dir as keyof typeof this.room.dirs];
+
+            if (roomDir !== undefined && roomDir.type == "door") {
+                roomDoors.push(roomDir);
+
+                if (roomDir.doorNouns.includes(noun)) {
+                    door = roomDir;
+
+                    break;
+                }
+            }
+        }
+
+        if (noun == "" && roomDoors.length == 1) {
+            door = roomDoors[0];
+        }
+
+        if (door === undefined) {
+            if (noun == "" && roomDoors.length != 0) {
+                return output("What are you trying to close?");
+            } else if (noun == "") {
+                return output("Can't find any doors to close.");
+            } else {
+                return output("Can't find any '" + noun + "' to close.");
+            }
+        }
+
+        if (!this.world.doorIsOpen(door.doorId)) {
+            return output(door.sayOnAlreadyOpen ?? "It's already closed.");
+        }
+
+        if (!door.canClose) {
+            return output(door.sayOnClose ?? "You can't close this door.");
+        }
+
+        this.world.setDoorOpenState(door.doorId, false);
+
+        return output(door.sayOnClose ?? "You close it.");
     }
 
     public getCounter(id: string): number {
