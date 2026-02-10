@@ -170,7 +170,7 @@ export class Player {
                 if (words[1].toLowerCase() == "up") {
                     return this.pickUp(words.slice(2), words.slice(0, 2).join(" "));
                 } else {
-                    return output("I don't know how to 'pick'. Did you want to say 'pick up' ('get' for short)?");
+                    return output("Don't know how to 'pick'. Did you want to say 'pick up' ('get' for short)?");
                 }
             }
             case "drop":
@@ -181,7 +181,7 @@ export class Player {
                 if (["down", "away", "up", "aside"].includes(words[1].toLowerCase())) {
                     return this.drop(words.slice(2), words.slice(0, 2).join(" "));
                 } else {
-                    return output("I don't know how to 'put'. Did you want to say 'put down' ('drop' for short)?");
+                    return output("Don't know how to 'put'. Did you want to say 'put down' ('drop' for short)?");
                 }
             }
             case "open": {
@@ -270,10 +270,21 @@ export class Player {
 
         const roomItems = this.world.findRoomItems(this.room.id)!;
 
+        let pfixMatch: string | null = null;
         for (let i = 0; i < roomItems.length; i++) {
             const item = this.room.items[i];
 
-            if (item.nouns.includes(noun)) {
+            for (const match of item.nouns.map(r => noun.match(r))) {
+                if (match === null || match.index != 0) continue;
+
+                if (noun.length != match[0].length) {
+                    if (pfixMatch === null || match[0].length < pfixMatch.length) {
+                        pfixMatch = match[0];
+                    }
+
+                    continue;
+                }
+
                 this.inv.push(item);
                 roomItems.splice(i, 1);
 
@@ -281,6 +292,10 @@ export class Player {
 
                 return output("Picked up " + noun + ".");
             }
+        }
+
+        if (pfixMatch !== null) {
+            return output("Not sure how to interpret that. Do you want to '" + commandWord + " " + pfixMatch + "'?");
         }
 
         return output("Can't find any '" + noun + "'.");
@@ -293,10 +308,21 @@ export class Player {
             return output("What are you trying to " + commandWord + "?");
         }
 
+        let pfixMatch: string | null = null;
         for (let i = 0; i < this.inv.length; i++) {
             const item = this.inv[i];
 
-            if (item.nouns.includes(noun)) {
+            for (const match of item.nouns.map(r => noun.match(r))) {
+                if (match === null || match.index != 0) continue;
+
+                if (noun.length != match[0].length) {
+                    if (pfixMatch === null || match[0].length < pfixMatch.length) {
+                        pfixMatch = match[0];
+                    }
+
+                    continue;
+                }
+
                 this.world.findRoomItems(this.room.id)!.push(item);
                 this.inv.splice(i, 1);
 
@@ -304,6 +330,10 @@ export class Player {
 
                 return output("Dropped " + noun + ".");
             }
+        }
+
+        if (pfixMatch !== null) {
+            return output("Not sure how to interpret that. Do you want to '" + commandWord + " " + pfixMatch + "'?");
         }
 
         return output("Can't find any '" + noun + "'.");
@@ -315,16 +345,27 @@ export class Player {
         const roomDoors = [];
         let door: RoomDir | undefined = undefined;
 
-        for (const dir in this.room.dirs) {
+        let pfixMatch: string | null = null;
+        dirs: for (const dir in this.room.dirs) {
             const roomDir = this.room.dirs[dir as keyof typeof this.room.dirs];
 
             if (roomDir !== undefined && roomDir.type == "door") {
                 roomDoors.push(roomDir);
 
-                if (roomDir.doorNouns.includes(noun)) {
+                for (const match of roomDir.doorNouns.map(r => noun.match(r))) {
+                    if (match === null || match.index != 0) continue;
+
+                    if (noun.length != match[0].length) {
+                        if (pfixMatch === null || match[0].length < pfixMatch.length) {
+                            pfixMatch = match[0];
+                        }
+
+                        continue;
+                    }
+
                     door = roomDir;
 
-                    break;
+                    break dirs;
                 }
             }
         }
@@ -338,6 +379,8 @@ export class Player {
                 return output("What are you trying to open?");
             } else if (noun == "") {
                 return output("Can't find any doors to open.");
+            } else if (pfixMatch !== null) {
+                return output("Not sure how to interpret that. Do you want to 'open " + pfixMatch + "'?");
             } else {
                 return output("Can't find any '" + noun + "' to open.");
             }
@@ -362,16 +405,27 @@ export class Player {
         const roomDoors = [];
         let door: RoomDir | undefined = undefined;
 
-        for (const dir in this.room.dirs) {
+        let pfixMatch: string | null = null;
+        dirs: for (const dir in this.room.dirs) {
             const roomDir = this.room.dirs[dir as keyof typeof this.room.dirs];
 
             if (roomDir !== undefined && roomDir.type == "door") {
                 roomDoors.push(roomDir);
 
-                if (roomDir.doorNouns.includes(noun)) {
+                for (const match of roomDir.doorNouns.map(r => noun.match(r))) {
+                    if (match === null || match.index != 0) continue;
+
+                    if (noun.length != match[0].length) {
+                        if (pfixMatch === null || match[0].length < pfixMatch.length) {
+                            pfixMatch = match[0];
+                        }
+
+                        continue;
+                    }
+
                     door = roomDir;
 
-                    break;
+                    break dirs;
                 }
             }
         }
@@ -385,6 +439,8 @@ export class Player {
                 return output("What are you trying to close?");
             } else if (noun == "") {
                 return output("Can't find any doors to close.");
+            } else if (pfixMatch !== null) {
+                return output("Not sure how to interpret that. Do you want to 'close " + pfixMatch + "'?");
             } else {
                 return output("Can't find any '" + noun + "' to close.");
             }

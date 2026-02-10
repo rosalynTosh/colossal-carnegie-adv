@@ -1,11 +1,13 @@
-export interface Item {
-    id: string;
+export interface ItemSpec {
+    readonly id: string;
 
-    name: string;
-    aOrAn: "a" | "an";
-    inspectStr: string;
+    readonly name: string;
+    readonly aOrAn: "a" | "an";
+    readonly inspectStr: string;
 
-    nouns: string[];
+    readonly nouns: ReadonlyArray<RegExp>;
 
-    readStr: string;
+    readonly readStr: string;
 }
+
+export interface Item extends ItemSpec {}

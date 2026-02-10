@@ -1,5 +1,5 @@
 import { FormatString } from "./formatting";
-import { Item } from "./items";
+import { Item, ItemSpec } from "./items";
 import { Player } from "./player";
 import { CAMPUS_ROOMS } from "./rooms/campus";
 import { DOHERTY_ROOMS } from "./rooms/doherty";
@@ -10,48 +10,49 @@ import { World } from "./world";
 export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northeast" | "northwest" | "southeast" | "southwest";
 
 export interface Room {
-    id: string;
+    readonly id: string;
 
-    print(roomItems: Item[], world: World, player: Player): FormatString;
+    readonly print: (roomItems: Item[], world: World, player: Player) => FormatString;
 
-    dirs: { [dir in Dir]?: RoomDir };
+    readonly dirs: { readonly [dir in Dir]?: RoomDir };
 
-    items: Item[];
-    itemStrs: { [itemId: string]: string };
+    readonly items: ReadonlyArray<ItemSpec>;
+    readonly itemStrs: { readonly [itemId: string]: string };
 }
 
 interface GotoRoomDir {
-    type: "goto";
-    roomId: string;
-    say?: string | undefined;
+    readonly type: "goto";
+    readonly roomId: string;
+    readonly say?: string | undefined;
 }
 
 interface DoorRoomDir {
-    type: "door";
+    readonly type: "door";
 
-    roomId: string;
-    say?: string | undefined;
+    readonly roomId: string;
+    readonly say?: string | undefined;
 
-    doorId: string;
+    readonly doorId: string;
 
-    doorNouns: string[];
-    canOpen: boolean;
-    canClose: boolean;
-    closeOnUse: boolean;
-    keyItem: string | null;
+    readonly doorNouns: ReadonlyArray<RegExp>;
 
-    sayIfClosed?: string | undefined;
-    sayOnOpen?: string | undefined;
-    sayOnNoItem?: string | undefined;
-    sayOnWrongItem?: string | undefined;
-    sayOnAlreadyOpen?: string | undefined;
-    sayOnClose?: string | undefined;
-    sayOnAlreadyClosed?: string | undefined;
+    readonly canOpen: boolean;
+    readonly canClose: boolean;
+    readonly closeOnUse: boolean;
+    readonly keyItem: string | null;
+
+    readonly sayIfClosed?: string | undefined;
+    readonly sayOnOpen?: string | undefined;
+    readonly sayOnNoItem?: string | undefined;
+    readonly sayOnWrongItem?: string | undefined;
+    readonly sayOnAlreadyOpen?: string | undefined;
+    readonly sayOnClose?: string | undefined;
+    readonly sayOnAlreadyClosed?: string | undefined;
 }
 
 interface SayRoomDir {
-    type: "say";
-    say: string;
+    readonly type: "say";
+    readonly say: string;
 }
 
 export type RoomDir = GotoRoomDir | DoorRoomDir | SayRoomDir;

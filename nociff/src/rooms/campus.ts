@@ -17,7 +17,7 @@ export const CAMPUS_ROOMS: Room[] = [
 
                 doorId: "mall_trapdoor",
 
-                doorNouns: ["trapdoor", "hatch"],
+                doorNouns: [/(?:(?:metal|steel|shiny|square|steam|tunnel) )*(?:trap(?:door)?|hatch|door)/i],
                 canOpen: false,
                 canClose: true,
                 closeOnUse: false,
@@ -32,7 +32,7 @@ export const CAMPUS_ROOMS: Room[] = [
                 aOrAn: "a",
                 inspectStr: "A bundle of papers printed in black-and-white.",
 
-                nouns: ["pamphlet", "paper", "papers", "leaflet", "news", "newspaper", "readme", "note", "satire", "bundle", "bundle of papers"],
+                nouns: [/(?:papers? )?(?:pamphlet|bundle)(?: papers?)?/i, /(?:bundled )?papers?/i, /leaflet/i, /news(?:paper)?/i, /note/i, /magazine/i],
 
                 readStr: "WELCOME TO COLOSSAL CARNEGIE ADVENTURE!\n\nThis is a game of incredible skill and breathtaking adventure. Many have walked this campus, but few have discovered the secrets buried within. No CMU should be without one!"
             }

@@ -18,7 +18,7 @@ export class World {
 
         for (const room of roomsList) {
             this.rooms.set(room.id, room);
-            this.roomItems.set(room.id, room.items);
+            this.roomItems.set(room.id, [...room.items]);
         }
 
         this.doors = new Map();
