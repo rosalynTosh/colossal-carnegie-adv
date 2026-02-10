@@ -162,14 +162,26 @@ export class Player {
             case "grab":
             case "hold":
             case "collect":
-            case "fetch": {
+            case "fetch":
+            case "claim": {
                 return this.pickUp(words.slice(1), words[0]);
             }
             case "pick": {
-                if (words[1] == "up") {
+                if (words[1].toLowerCase() == "up") {
                     return this.pickUp(words.slice(2), words.slice(0, 2).join(" "));
                 } else {
                     return output("I don't know how to 'pick'. Did you want to say 'pick up' ('get' for short)?");
+                }
+            }
+            case "drop":
+            case "release": {
+                return this.drop(words.slice(1), words[0]);
+            }
+            case "put": {
+                if (["down", "away", "up", "aside"].includes(words[1].toLowerCase())) {
+                    return this.drop(words.slice(2), words.slice(0, 2).join(" "));
+                } else {
+                    return output("I don't know how to 'put'. Did you want to say 'put down' ('drop' for short)?");
                 }
             }
             default: {
@@ -205,7 +217,7 @@ export class Player {
 
                 this.world.tick();
 
-                return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + this.printRoom());
+                return [...output(roomDir.say === undefined ? "" : roomDir.say + "\n\n"), ...this.printRoom()];
             }
             case "door": {
                 if (this.world.doorIsOpen(roomDir.doorId)) {
@@ -227,7 +239,7 @@ export class Player {
                         this.world.triggerFarnam(oldRoomId);
                     }
 
-                    return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + this.printRoom());
+                    return [...output((roomDir.say === undefined ? "" : roomDir.say + "\n\n")), ...this.printRoom()];
                 } else {
                     if (roomDir.sayIfClosed === undefined) {
                         return output("The door is closed.");
@@ -246,7 +258,7 @@ export class Player {
         const noun = nounPhrase.join(" ");
 
         if (noun == "") {
-            return output("What should I " + commandWord.toLowerCase() + "?");
+            return output("What are you trying to " + commandWord.toLowerCase() + "?");
         }
 
         const roomItems = this.world.findRoomItems(this.room.id)!;
@@ -258,11 +270,36 @@ export class Player {
                 this.inv.push(item);
                 roomItems.splice(i, 1);
 
+                this.world.tick();
+
                 return output("Picked up " + noun + ".");
             }
         }
 
-        return output("I can't find any '" + noun + "'.");
+        return output("Can't find any '" + noun + "'.");
+    }
+
+    private drop(nounPhrase: string[], commandWord: string): FormatString {
+        const noun = nounPhrase.join(" ");
+
+        if (noun == "") {
+            return output("What are you trying to " + commandWord + "?");
+        }
+
+        for (let i = 0; i < this.inv.length; i++) {
+            const item = this.inv[i];
+
+            if (item.nouns.includes(noun)) {
+                this.world.findRoomItems(this.room.id)!.push(item);
+                this.inv.splice(i, 1);
+
+                this.world.tick();
+
+                return output("Dropped " + noun + ".");
+            }
+        }
+
+        return output("Can't find any '" + noun + "'.");
     }
 
     public getCounter(id: string): number {

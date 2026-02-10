@@ -8,6 +8,7 @@ export type FormatString = FormatStringPart[];
 type CurrNode = { type: "output", node: Text } | { type: "fault", node: HTMLSpanElement } | { type: "dbg", node: HTMLSpanElement };
 
 export function formatStringToHTML(formatString: FormatString): Node {
+    console.log(formatString);
     if (formatString.length == 0) {
         return document.createTextNode("");
     }
