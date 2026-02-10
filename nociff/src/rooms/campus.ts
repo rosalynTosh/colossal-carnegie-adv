@@ -17,12 +17,26 @@ export const CAMPUS_ROOMS: Room[] = [
 
                 doorId: "mall_trapdoor",
 
+                doorNouns: ["trapdoor", "hatch"],
                 canOpen: false,
                 canClose: true,
                 closeOnUse: false,
                 keyItem: "square_tool"
             }
-        }
+        },
+        [
+            {
+                id: "pamphlet",
+
+                name: "pamphlet",
+                aOrAn: "a",
+                inspectStr: "A bundle of papers printed in black-and-white.",
+
+                nouns: ["pamphlet", "paper", "papers", "leaflet", "news", "newspaper", "readme", "note", "satire", "bundle", "bundle of papers"],
+
+                readStr: "WELCOME TO COLOSSAL CARNEGIE ADVENTURE!\n\nThis is a game of incredible skill and breathtaking adventure. Many have walked this campus, but few have discovered the secrets buried within. No CMU should be without one!"
+            }
+        ]
     ),
     basicRoom(
         "lower_mall",

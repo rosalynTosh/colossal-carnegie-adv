@@ -1,5 +1,11 @@
 export interface Item {
     id: string;
-}
 
-export const ITEMS = [];
+    name: string;
+    aOrAn: "a" | "an";
+    inspectStr: string;
+
+    nouns: string[];
+
+    readStr: string;
+}

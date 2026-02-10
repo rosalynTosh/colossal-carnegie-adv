@@ -36,6 +36,10 @@ export class World {
         return this.rooms.get(id);
     }
 
+    public findRoomItems(id: string): Item[] | undefined {
+        return this.roomItems.get(id);
+    }
+
     public doorIsOpen(id: string): boolean | undefined {
         return this.doorsOpen.get(id);
     }

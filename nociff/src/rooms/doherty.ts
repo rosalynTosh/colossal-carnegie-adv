@@ -21,7 +21,8 @@ export function dohertyRoom(id: string, dirs: Room["dirs"], long?: string, short
 
         dirs,
 
-        items: []
+        items: [],
+        itemStrs: {}
     };
 }
 

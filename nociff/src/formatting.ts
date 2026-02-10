@@ -118,3 +118,15 @@ export function formatStringToHTML(formatString: FormatString): Node {
 
     return span;
 }
+
+export function output(str: string): FormatString {
+    return [{ type: "output", str }];
+}
+
+export function fault(str: string): FormatString {
+    return [{ type: "fault", str }];
+}
+
+export function dbg(str: string): FormatString {
+    return [{ type: "dbg", str }];
+}

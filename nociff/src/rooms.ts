@@ -1,20 +1,23 @@
 import { FormatString } from "./formatting";
 import { Item } from "./items";
+import { Player } from "./player";
 import { CAMPUS_ROOMS } from "./rooms/campus";
 import { DOHERTY_ROOMS } from "./rooms/doherty";
 import { LIMINAL_ROOMS } from "./rooms/liminal";
 import { WEAN_ROOMS } from "./rooms/wean";
+import { World } from "./world";
 
 export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northeast" | "northwest" | "southeast" | "southwest";
 
 export interface Room {
     id: string;
 
-    print(): FormatString;
+    print(roomItems: Item[], world: World, player: Player): FormatString;
 
     dirs: { [dir in Dir]?: RoomDir };
 
     items: Item[];
+    itemStrs: { [itemId: string]: string };
 }
 
 interface GotoRoomDir {
@@ -31,6 +34,7 @@ interface DoorRoomDir {
 
     doorId: string;
 
+    doorNouns: string[];
     canOpen: boolean;
     canClose: boolean;
     closeOnUse: boolean;
@@ -67,7 +71,7 @@ export function say(say: string): RoomDir {
     };
 }
 
-export function basicRoom(id: string, short: string, long: string, dirs: Room["dirs"]): Room {
+export function basicRoom(id: string, short: string, long: string, dirs: Room["dirs"], items: Item[] = [], itemStrs: { [itemId: string]: string } = {}): Room {
     return {
         id,
 
@@ -78,7 +82,8 @@ export function basicRoom(id: string, short: string, long: string, dirs: Room["d
 
         dirs,
 
-        items: []
+        items,
+        itemStrs
     };
 }
 

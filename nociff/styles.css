@@ -21,6 +21,11 @@ body {
     font-weight: bold;
 }
 
+#history .dbg {
+    color: #aaaaaa;
+    font-size: 12px;
+}
+
 #input-cont {
     white-space: pre-wrap;
     word-break: break-all;

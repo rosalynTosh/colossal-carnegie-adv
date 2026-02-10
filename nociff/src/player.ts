@@ -1,4 +1,4 @@
-import { FormatString } from "./formatting";
+import { fault, FormatString, output } from "./formatting";
 import { Item } from "./items";
 import { Dir, Room } from "./rooms";
 import { World } from "./world";
@@ -43,12 +43,27 @@ const DIR_WORDS: { [word: string]: Dir } = {
     "u": "up",
 } as const satisfies { [word: string]: Dir };
 
-function output(str: string): FormatString {
-    return [{ type: "output", str }];
-}
+const SHORT_DIR_WORD: { [dir in Dir]: string } = {
+    "north": "n",
+    "northeast": "ne",
+    "east": "e",
+    "southeast": "se",
+    "south": "s",
+    "southwest": "sw",
+    "west": "w",
+    "northwest": "nw",
+    "down": "d",
+    "up": "u"
+} as const satisfies { [word in Dir]: string };
 
-function fault(str: string): FormatString {
-    return [{ type: "fault", str }];
+function uppercase(str: string): string {
+    if (str != str.toLowerCase()) {
+        return str;
+    }
+
+    const words = str.split(" ");
+
+    return words.map((w) => /*["a", "an", "the", "of"].includes(w) && i != 0 ? w : */w[0].toUpperCase() + w.slice(1)).join(" ");
 }
 
 export class Player {
@@ -69,10 +84,17 @@ export class Player {
     }
 
     public initialPrintout(): FormatString {
-        return [{ type: "output", str: "Colossal Carnegie Adventure I\n\n" }, ...this.room.print(), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
+        return [{ type: "output", str: "Colossal Carnegie Adventure I\n\n" }, ...this.printRoom(), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
     }
 
-    public runUserInputInner(input: string): FormatString {
+    private printRoom(): FormatString {
+        const room = this.room.print(this.world.findRoomItems(this.room.id)!, this.world, this);
+        const items = this.world.findRoomItems(this.room.id)!.flatMap(i => output(i.id in this.room.itemStrs ? this.room.itemStrs[i.id] : "\n" + uppercase(i.aOrAn[0]) + " " + i.name + " is lying on the ground."));
+
+        return [...room, ...items];
+    }
+
+    private runUserInputInner(input: string): FormatString {
         const words = input.replace(/\s+/g, " ").trim().split(" ");
 
         if (words.length == 0 || words[0] == "") {
@@ -84,15 +106,35 @@ export class Player {
         switch (firstWord) {
             case "look":
             case "l": {
-                return this.room.print();
+                if (words.length > 1) {
+                    return output("Don't know how to do that. Did you want to say 'look' ('l' for short)?");
+                }
+
+                return this.printRoom();
+            }
+            case "inventory":
+            case "inv":
+            case "i":
+            case "carrying":
+            case "holding":
+            case "items": {
+                if (words.length > 1) {
+                    return output("Don't know how to do that. Did you want to say 'inventory' ('inv'/'i' for short)?");
+                }
+
+                return output(this.inv.length == 0 ? "You're not holding anything." : "You're holding the following items:\n" + this.inv.map(i => "- " + uppercase(i.name)).join("\n"));
             }
             case "pause":
             case "still":
             case "stay":
             case "wait": {
+                if (words.length > 1 && !(firstWord == "stay" && words[1].toLowerCase() == "still")) {
+                    return output("Don't know how to do that. Did you want to say 'stay still' ('wait' for short)?");
+                }
+
                 this.world.tick();
 
-                return this.room.print();
+                return this.printRoom();
             }
             case "move":
             case "go":
@@ -104,13 +146,34 @@ export class Player {
                 const sndWord = words[1].toLowerCase();
 
                 if (sndWord in DIR_WORDS) {
-                    return this.move(DIR_WORDS[sndWord]);
+                    const dir = DIR_WORDS[sndWord];
+
+                    if (words.length > 2) {
+                        return output("Don't know how to do that. Did you want to say 'move " + dir + "' ('" + dir + "'/'" + SHORT_DIR_WORD[dir] + "' for short)?");
+                    }
+
+                    return this.move(dir);
                 }
 
                 return output("Don't know which way '" + words[1] + "' is");
             }
+            case "take":
+            case "get":
+            case "grab":
+            case "hold":
+            case "collect":
+            case "fetch": {
+                return this.pickUp(words.slice(1), words[0]);
+            }
+            case "pick": {
+                if (words[1] == "up") {
+                    return this.pickUp(words.slice(2), words.slice(0, 2).join(" "));
+                } else {
+                    return output("I don't know how to 'pick'. Did you want to say 'pick up' ('get' for short)?");
+                }
+            }
             default: {
-                if (firstWord in DIR_WORDS) {
+                if (firstWord in DIR_WORDS && words.length == 1) {
                     return this.move(DIR_WORDS[firstWord]);
                 }
 
@@ -142,7 +205,7 @@ export class Player {
 
                 this.world.tick();
 
-                return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print());
+                return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + this.printRoom());
             }
             case "door": {
                 if (this.world.doorIsOpen(roomDir.doorId)) {
@@ -164,7 +227,7 @@ export class Player {
                         this.world.triggerFarnam(oldRoomId);
                     }
 
-                    return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + gotoRoom.print());
+                    return output((roomDir.say === undefined ? "" : roomDir.say + "\n\n") + this.printRoom());
                 } else {
                     if (roomDir.sayIfClosed === undefined) {
                         return output("The door is closed.");
@@ -177,6 +240,29 @@ export class Player {
                 return output(roomDir.say);
             }
         }
+    }
+
+    private pickUp(nounPhrase: string[], commandWord: string): FormatString {
+        const noun = nounPhrase.join(" ");
+
+        if (noun == "") {
+            return output("What should I " + commandWord.toLowerCase() + "?");
+        }
+
+        const roomItems = this.world.findRoomItems(this.room.id)!;
+
+        for (let i = 0; i < roomItems.length; i++) {
+            const item = this.room.items[i];
+
+            if (item.nouns.includes(noun)) {
+                this.inv.push(item);
+                roomItems.splice(i, 1);
+
+                return output("Picked up " + noun + ".");
+            }
+        }
+
+        return output("I can't find any '" + noun + "'.");
     }
 
     public getCounter(id: string): number {
