@@ -164,7 +164,7 @@ export class Player {
             case "collect":
             case "fetch":
             case "claim": {
-                return this.pickUp(words.slice(1), words[0]);
+                return this.pickUp(words.slice(1), firstWord);
             }
             case "pick": {
                 if (words[1].toLowerCase() == "up") {
@@ -175,11 +175,11 @@ export class Player {
             }
             case "drop":
             case "release": {
-                return this.drop(words.slice(1), words[0]);
+                return this.drop(words.slice(1), firstWord);
             }
             case "put": {
                 if (["down", "away", "up", "aside"].includes(words[1].toLowerCase())) {
-                    return this.drop(words.slice(2), words.slice(0, 2).join(" "));
+                    return this.drop(words.slice(2), words.slice(0, 2).join(" ").toLowerCase());
                 } else {
                     return output("Don't know how to 'put'. Did you want to say 'put down' ('drop' for short)?");
                 }
@@ -265,7 +265,7 @@ export class Player {
         const noun = nounPhrase.join(" ");
 
         if (noun == "") {
-            return output("What are you trying to " + commandWord.toLowerCase() + "?");
+            return output("What are you trying to " + commandWord + "?");
         }
 
         const roomItems = this.world.findRoomItems(this.room.id)!;
