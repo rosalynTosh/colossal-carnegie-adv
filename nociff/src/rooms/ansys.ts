@@ -62,7 +62,7 @@ export const ANSYS_ROOMS: Room[] = [
         "ANSYS Hall: Floor 1",
         "This is a nice area with many chairs and windows. There are some locked classrooms nearby, and a door to a stairwell to the south.",
         {
-            south: goto("ansys.stairs.b"),
+            south: goto("ansys.stairs.1"),
             north: goto("ansys.big_stairs.1")
         }
     ),
@@ -89,11 +89,10 @@ export const ANSYS_ROOMS: Room[] = [
     basicRoom(
         "ansys.2.kitchenette",
         "ANSYS Hall: Floor 2, kitchenette",
-        "This is a small kitchenette. There is a conference room just to the west, and a pair of glass double doors opposite it to the east. A narrow hallway runs north, and a there is a door to a stairwell to the south.",
+        "This is a small kitchenette. There is a conference room just to the west, and a pair of glass double doors opposite it to the east. There is a door to a stairwell to the south.",
         {
             west: goto("ansys.2.conference_room"),
             east: goto("ansys.2"),
-            north: goto("ansys.2.offices"),
             south: goto("ansys.stairs.2")
         }
     ),
