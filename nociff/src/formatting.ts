@@ -1,13 +1,11 @@
-export interface FormatStringPart {
+export interface Printout {
     type: "output" | "fault" | "dbg";
     str: string;
 }
 
-export type FormatString = FormatStringPart[];
-
 type CurrNode = { type: "output", node: Text } | { type: "fault", node: HTMLSpanElement } | { type: "dbg", node: HTMLSpanElement };
 
-export function formatStringToHTML(formatString: FormatString): Node {
+export function formatStringToHTML(formatString: Printout[]): Node {
     if (formatString.length == 0) {
         return document.createTextNode("");
     }
@@ -119,14 +117,14 @@ export function formatStringToHTML(formatString: FormatString): Node {
     return span;
 }
 
-export function output(str: string): FormatString {
+export function output(str: string): Printout[] {
     return [{ type: "output", str }];
 }
 
-export function fault(str: string): FormatString {
+export function fault(str: string): Printout[] {
     return [{ type: "fault", str }];
 }
 
-export function dbg(str: string): FormatString {
+export function dbg(str: string): Printout[] {
     return [{ type: "dbg", str }];
 }

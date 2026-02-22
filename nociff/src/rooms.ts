@@ -1,4 +1,4 @@
-import { FormatString } from "./formatting";
+import { Printout } from "./formatting";
 import { Item, ItemSpec } from "./items";
 import { Player } from "./player";
 import { CAMPUS_ROOMS } from "./rooms/campus";
@@ -12,7 +12,7 @@ export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northea
 export interface Room {
     readonly id: string;
 
-    readonly print: (roomItems: Item[], world: World, player: Player) => FormatString;
+    readonly print: (roomItems: Item[], world: World, player: Player) => Printout[];
 
     readonly dirs: { readonly [dir in Dir]?: RoomDir };
 

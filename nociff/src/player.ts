@@ -1,4 +1,4 @@
-import { fault, FormatString, FormatStringPart, output } from "./formatting";
+import { fault, Printout, output } from "./formatting";
 import { Item } from "./items";
 import { Dir, Room, RoomDir } from "./rooms";
 import { World } from "./world";
@@ -83,19 +83,19 @@ export class Player {
         this.counters = new Map();
     }
 
-    public initialPrintout(): FormatString {
+    public initialPrintout(): Printout[] {
         return [{ type: "output", str: "Colossal Carnegie Adventure I\n\n" }, ...this.printRoom(), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
     }
 
-    private printRoom(): FormatString {
+    private printRoom(): Printout[] {
         const room = this.room.print(this.world.findRoomItems(this.room.id)!, this.world, this);
         const items = this.world.findRoomItems(this.room.id)!.flatMap(i => output(i.id in this.room.itemStrs ? this.room.itemStrs[i.id] : "\n" + uppercase(i.aOrAn[0]) + " " + i.name + " is lying on the ground."));
         const farnam = this.printFarnamStatus();
 
-        return [...room, ...items, ...(farnam === null ? [] : [{ type: "output", str: "\n" } as FormatStringPart, ...farnam])];
+        return [...room, ...items, ...(farnam === null ? [] : [{ type: "output", str: "\n" } as Printout, ...farnam])];
     }
 
-    private printFarnamStatus(): FormatString | null {
+    private printFarnamStatus(): Printout[] | null {
         const farnamRoom = this.world.getFarnamRoom();
 
         if (this.room.id == farnamRoom.id) {
@@ -128,7 +128,7 @@ export class Player {
         return null;
     }
 
-    private runUserInputInner(input: string): FormatString {
+    private runUserInputInner(input: string): Printout[] {
         const words = input.replace(/\s+/g, " ").trim().split(" ");
 
         if (words.length == 0 || words[0] == "") {
@@ -235,11 +235,11 @@ export class Player {
         }
     }
 
-    public runUserInput(input: string): FormatString {
+    public runUserInput(input: string): Printout[] {
         return [...this.runUserInputInner(input), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
     }
 
-    private move(dir: Dir): FormatString {
+    private move(dir: Dir): Printout[] {
         const roomDir = this.room.dirs[dir];
 
         if (roomDir === undefined) {
@@ -295,7 +295,7 @@ export class Player {
         }
     }
 
-    private pickUp(nounPhrase: string[], commandWord: string): FormatString {
+    private pickUp(nounPhrase: string[], commandWord: string): Printout[] {
         const noun = nounPhrase.join(" ");
 
         if (noun == "") {
@@ -335,7 +335,7 @@ export class Player {
         return output("Can't find any '" + noun + "'.");
     }
 
-    private drop(nounPhrase: string[], commandWord: string): FormatString {
+    private drop(nounPhrase: string[], commandWord: string): Printout[] {
         const noun = nounPhrase.join(" ");
 
         if (noun == "") {
@@ -373,7 +373,7 @@ export class Player {
         return output("Can't find any '" + noun + "'.");
     }
 
-    private openDoor(nounPhrase: string[]): FormatString {
+    private openDoor(nounPhrase: string[]): Printout[] {
         const noun = nounPhrase.join(" ");
 
         const roomDoors = [];
@@ -433,7 +433,7 @@ export class Player {
         return output(door.sayOnOpen ?? "You open it.");
     }
 
-    private closeDoor(nounPhrase: string[]): FormatString {
+    private closeDoor(nounPhrase: string[]): Printout[] {
         const noun = nounPhrase.join(" ");
 
         const roomDoors = [];
