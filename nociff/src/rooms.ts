@@ -1,6 +1,8 @@
 import { Printout } from "./formatting";
 import { Item, ItemSpec } from "./items";
 import { Player } from "./player";
+import { ANSYS_ROOMS } from "./rooms/ansys";
+import { BAKER_PORTER_ROOMS } from "./rooms/baker_porter";
 import { CAMPUS_ROOMS } from "./rooms/campus";
 import { DOHERTY_ROOMS } from "./rooms/doherty";
 import { LIMINAL_ROOMS } from "./rooms/liminal";
@@ -10,52 +12,64 @@ import { World } from "./world";
 export type Dir = "north" | "east" | "south" | "west" | "up" | "down" | "northeast" | "northwest" | "southeast" | "southwest";
 
 export interface Room {
+    id: string;
+
+    print: (roomItems: Item[], world: World, player: Player) => Printout[];
+
+    dirs: { [dir in Dir]?: RoomDir };
+
+    items: ItemSpec[];
+    itemStrs: { [itemId: string]: string };
+}
+
+export interface RoomSpec {
     readonly id: string;
 
     readonly print: (roomItems: Item[], world: World, player: Player) => Printout[];
 
-    readonly dirs: { readonly [dir in Dir]?: RoomDir };
+    readonly dirs: { readonly [dir in Dir]?: RoomDirSpec };
 
     readonly items: ReadonlyArray<ItemSpec>;
     readonly itemStrs: { readonly [itemId: string]: string };
 }
 
 interface GotoRoomDir {
-    readonly type: "goto";
-    readonly roomId: string;
-    readonly say?: string | undefined;
+    type: "goto";
+    roomId: string;
+    say?: string | undefined;
 }
 
 interface DoorRoomDir {
-    readonly type: "door";
+    type: "door";
 
-    readonly roomId: string;
-    readonly say?: string | undefined;
+    roomId: string;
+    say?: string | undefined;
 
-    readonly doorId: string;
+    doorId: string;
 
-    readonly doorNouns: ReadonlyArray<RegExp>;
+    doorNouns: ReadonlyArray<RegExp>;
 
-    readonly canOpen: boolean;
-    readonly canClose: boolean;
-    readonly closeOnUse: boolean;
-    readonly keyItem: string | null;
+    canOpen: boolean;
+    canClose: boolean;
+    closeOnUse: boolean;
+    keyItem: string | null;
 
-    readonly sayIfClosed?: string | undefined;
-    readonly sayOnOpen?: string | undefined;
-    readonly sayOnNoItem?: string | undefined;
-    readonly sayOnWrongItem?: string | undefined;
-    readonly sayOnAlreadyOpen?: string | undefined;
-    readonly sayOnClose?: string | undefined;
-    readonly sayOnAlreadyClosed?: string | undefined;
+    sayIfClosed?: string | undefined;
+    sayOnOpen?: string | undefined;
+    sayOnNoItem?: string | undefined;
+    sayOnWrongItem?: string | undefined;
+    sayOnAlreadyOpen?: string | undefined;
+    sayOnClose?: string | undefined;
+    sayOnAlreadyClosed?: string | undefined;
 }
 
 interface SayRoomDir {
-    readonly type: "say";
-    readonly say: string;
+    type: "say";
+    say: string;
 }
 
 export type RoomDir = GotoRoomDir | DoorRoomDir | SayRoomDir;
+export type RoomDirSpec = Readonly<RoomDir>;
 
 export function goto(roomId: string, say?: string): RoomDir {
     return {
@@ -88,9 +102,11 @@ export function basicRoom(id: string, short: string, long: string, dirs: Room["d
     };
 }
 
-export const ROOMS: Room[] = [
+export const ROOMS: RoomSpec[] = [
     ...CAMPUS_ROOMS,
 
+    ...ANSYS_ROOMS,
+    ...BAKER_PORTER_ROOMS,
     ...DOHERTY_ROOMS,
     ...LIMINAL_ROOMS,
     ...WEAN_ROOMS

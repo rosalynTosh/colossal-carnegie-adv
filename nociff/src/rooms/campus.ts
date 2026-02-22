@@ -46,7 +46,8 @@ export const CAMPUS_ROOMS: Room[] = [
             south: goto("porter.a"),
             north: goto("outside_la_prima"),
             east: goto("mall"),
-            west: goto("hamerschlag.1.lobby")
+            west: goto("hamerschlag.1.lobby"),
+            southwest: goto("scaife_walkway")
         }
     ),
     basicRoom(
@@ -70,4 +71,39 @@ export const CAMPUS_ROOMS: Room[] = [
             west: say("You try to climb over the counter but are blocked by strategically-placed coffee brewing devices. What could they be hiding?")
         }
     ),
+    basicRoom(
+        "cursed_courtyard",
+        "Cursed Courtyard",
+        "This is a small enclosed outdoor space under the Scaife walkway. The ground is solid concrete. There is an alarmed door to ANSYS C to the south, an alarmed double door to TechSpark to the west, a locked double door into Hamerschlag Hall to the north, and a double door into Scott Hall to the east.",
+        {
+            south: goto("ansys.c.courtyard_hallway", "You manage to get through the door, only after making a considerable racket."), // TODO: ALERT FARNAM
+            west: goto("techspark", "You manage to get through the door, only after making a considerable racket."),
+            north: say("The doors are locked."),
+            east: goto("scott.4s.chamber_of_lies"),
+            up: goto("scaife_walkway", "You climb a pillar.")
+        }
+    ),
+    basicRoom(
+        "scaife_walkway",
+        "Scaife Walkway",
+        "You're on a bridge which spans from the Scaife Quad to the Mall, which are southwest and northeast respectively. There is a door into ANSYS Hall to your south.",
+        {
+            southwest: goto("scaife_quad"),
+            northeast: goto("lower_mall"),
+            south: goto("ansys.big_stairs.b")
+        }
+    ),
+    basicRoom(
+        "scaife_quad",
+        "Scaife Quad",
+        "You find yourself in a large quad north of Scaife Hall. You can walk under Scaife Hall to your south, onto a patio outside Porter to your southeast, into ANSYS Hall to your east, onto the Scaife walkway to your northeast, into Hamerschlag Hall to your north, or onto Hamerschlag Drive to your northwest.",
+        {
+            south: goto("under_scaife"),
+            southeast: goto("porter.b.patio"),
+            east: goto("ansys.c"),
+            northeast: goto("scaife_walkway"),
+            north: goto("hamerschlag.c.lobby"),
+            northwest: goto("hamerschlag_drive.hamerschlag")
+        }
+    )
 ]; // TODO: panel with buttons labeled A, B, and C inside the La Prima counter

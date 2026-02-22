@@ -1,10 +1,10 @@
 import { Door } from "./doors";
 import { Farnam } from "./farnam";
 import { Item } from "./items";
-import { Room } from "./rooms";
+import { RoomSpec } from "./rooms";
 
 export class World {
-    private rooms: Map<string, Room>;
+    private rooms: Map<string, RoomSpec>;
     private roomItems: Map<string, Item[]>;
 
     private doors: Map<string, Door>;
@@ -12,7 +12,7 @@ export class World {
 
     private farnam: Farnam;
 
-    constructor(roomsList: Room[], doorsList: Door[], farnamInitRoom: Room) {
+    constructor(roomsList: RoomSpec[], doorsList: Door[], farnamInitRoom: RoomSpec) {
         this.rooms = new Map();
         this.roomItems = new Map();
 
@@ -32,7 +32,7 @@ export class World {
         this.farnam = new Farnam(this, farnamInitRoom);
     }
 
-    public findRoom(id: string): Room | undefined {
+    public findRoom(id: string): RoomSpec | undefined {
         return this.rooms.get(id);
     }
 
@@ -54,7 +54,7 @@ export class World {
         return false;
     }
 
-    public getFarnamRoom(): Room {
+    public getFarnamRoom(): RoomSpec {
         return this.farnam.getRoom();
     }
 

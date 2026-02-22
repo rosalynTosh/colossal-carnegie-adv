@@ -1,6 +1,6 @@
 import { fault, Printout, output } from "./formatting";
 import { Item } from "./items";
-import { Dir, Room, RoomDir } from "./rooms";
+import { Dir, RoomDir, RoomSpec } from "./rooms";
 import { World } from "./world";
 
 const DIR_WORDS: { [word: string]: Dir } = {
@@ -69,12 +69,12 @@ function uppercase(str: string): string {
 export class Player {
     private world: World;
 
-    private room: Room;
+    private room: RoomSpec;
 
     private inv: Item[];
     private counters: Map<string, number>;
 
-    constructor(world: World, initRoom: Room) {
+    constructor(world: World, initRoom: RoomSpec) {
         this.world = world;
 
         this.room = initRoom;
