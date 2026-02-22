@@ -1,4 +1,4 @@
-import { fault, FormatString, output } from "./formatting";
+import { fault, FormatString, FormatStringPart, output } from "./formatting";
 import { Item } from "./items";
 import { Dir, Room, RoomDir } from "./rooms";
 import { World } from "./world";
@@ -90,8 +90,42 @@ export class Player {
     private printRoom(): FormatString {
         const room = this.room.print(this.world.findRoomItems(this.room.id)!, this.world, this);
         const items = this.world.findRoomItems(this.room.id)!.flatMap(i => output(i.id in this.room.itemStrs ? this.room.itemStrs[i.id] : "\n" + uppercase(i.aOrAn[0]) + " " + i.name + " is lying on the ground."));
+        const farnam = this.printFarnamStatus();
 
-        return [...room, ...items];
+        return [...room, ...items, ...(farnam === null ? [] : [{ type: "output", str: "\n" } as FormatStringPart, ...farnam])];
+    }
+
+    private printFarnamStatus(): FormatString | null {
+        const farnamRoom = this.world.getFarnamRoom();
+
+        if (this.room.id == farnamRoom.id) {
+            return output("Farnam Jahanian is standing just over your shoulder.");
+        }
+
+        for (const dir in farnamRoom.dirs) {
+            const roomDir = farnamRoom.dirs[dir as keyof typeof farnamRoom.dirs];
+
+            if (roomDir === undefined) continue;
+
+            if (roomDir.type == "goto" || roomDir.type == "door") {
+                if (roomDir.roomId == this.room.id) {
+                    return output("You hear footsteps " + ({
+                        "north": "to your south",
+                        "east": "to your west",
+                        "south": "to your north",
+                        "west": "to your east",
+                        "up": "under you",
+                        "down": "above you",
+                        "northeast": "to your southwest",
+                        "northwest": "to your southeast",
+                        "southeast": "to your northwest",
+                        "southwest": "to your northeast"
+                    } as const satisfies { [dir in Dir]: string })[dir] + ".");
+                }
+            }
+        }
+
+        return null;
     }
 
     private runUserInputInner(input: string): FormatString {
