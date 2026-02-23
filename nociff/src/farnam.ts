@@ -114,7 +114,9 @@ export class Farnam {
 
                     if (dstRoom !== undefined && !seen.has(roomDir.roomId)) {
                         if (roomDir.roomId == targRoomId) {
-                            this.room = node.stepRoom!;
+                            this.room = node.stepRoom ?? dstRoom;
+
+                            console.log(node);
 
                             return node.i;
                         }
@@ -122,7 +124,7 @@ export class Farnam {
                         seen.add(roomDir.roomId);
                         front.push({
                             i: node.i + 1,
-                            stepRoom: node.stepRoom ?? node.room,
+                            stepRoom: node.stepRoom ?? dstRoom,
                             room: dstRoom
                         });
                     }

@@ -490,6 +490,8 @@ export class Player {
 
         this.world.setDoorOpenState(door.doorId, false);
 
+        this.world.triggerFarnam(this.room.id);
+
         return output(door.sayOnClose ?? "You close it.");
     }
 

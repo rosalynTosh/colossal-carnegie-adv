@@ -166,3 +166,12 @@ delete WEAN_ROOMS.find(r => r.id == "wean.stairs.d.3")!.dirs.down;
 
 delete WEAN_ROOMS.find(r => r.id == "wean.1.north")!.dirs.down;
 delete WEAN_ROOMS.find(r => r.id == "wean.8.north")!.dirs.up;
+
+WEAN_ROOMS.find(r => r.id == "wean.5.south")!.dirs.south = goto("la_prima");
+
+WEAN_ROOMS.find(r => r.id == "wean.4.400")!.dirs.east = goto("liminal.ramp");
+WEAN_ROOMS.find(r => r.id == "wean.4.400")!.dirs.down = goto("liminal.ramp");
+WEAN_ROOMS.find(r => r.id == "wean.5.400")!.dirs.east = goto("liminal.ground");
+WEAN_ROOMS.find(r => r.id == "wean.6.400")!.dirs.east = goto("liminal.6");
+WEAN_ROOMS.find(r => r.id == "wean.7.400")!.dirs.east = goto("liminal.7");
+WEAN_ROOMS.find(r => r.id == "wean.8.400")!.dirs.east = goto("liminal.8");
