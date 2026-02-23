@@ -6,6 +6,7 @@ import { BAKER_PORTER_ROOMS } from "./rooms/baker_porter";
 import { CAMPUS_ROOMS } from "./rooms/campus";
 import { DOHERTY_ROOMS } from "./rooms/doherty";
 import { LIMINAL_ROOMS } from "./rooms/liminal";
+import { STEAM_TUNNEL_ROOMS } from "./rooms/steam_tunnel";
 import { WEAN_ROOMS } from "./rooms/wean";
 import { World } from "./world";
 
@@ -109,6 +110,7 @@ export const ROOMS: RoomSpec[] = [
     ...BAKER_PORTER_ROOMS,
     ...DOHERTY_ROOMS,
     ...LIMINAL_ROOMS,
+    ...STEAM_TUNNEL_ROOMS,
     ...WEAN_ROOMS
 ];
 

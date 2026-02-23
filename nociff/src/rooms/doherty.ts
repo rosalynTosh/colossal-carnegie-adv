@@ -114,11 +114,16 @@ export const DOHERTY_ROOMS: Room[] = [
         southeast: goto("doherty.b.pipes.mural"),
         south: goto("doherty.b.pipes.inside_tunnel")
     }),
-    dohertyRoom("b.pipes.inside_tunnel", {
-        north: goto("doherty.b.pipes.outside_tunnel"),
-        east: goto("doherty.b.pipes.mural"),
-        down: goto("steam_tunnel.doherty")
-    }),
+    basicRoom(
+        "doherty.b.pipes.inside_tunnel",
+        "Doherty Pipes: Inside Steam Tunnel",
+        "You find yourself on top of pipes and steel conduits above the north branch of a steam tunnel. Below you is a small room with a camera in the northeast corner. To your north, the pipes you're on run through the wall into Doherty Hall. You can safely climb down some pipes to the ground.",
+        {
+            north: goto("doherty.b.pipes.outside_tunnel"),
+            east: goto("doherty.b.pipes.mural"),
+            down: goto("steam_tunnel.doherty")
+        }
+    ),
     dohertyRoom("b.cold_corridor", {
         north: goto("doherty_wilderness_patio"),
         west: goto("doherty.b.mall_side_corridor.warm_stairs")
