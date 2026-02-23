@@ -1,3 +1,4 @@
+import { DOORS } from "./doors";
 import { Printout } from "./formatting";
 import { Item, ItemSpec } from "./items";
 import { Player } from "./player";
@@ -118,6 +119,18 @@ for (let i = 1; i < ROOMS.length; i++) {
     for (let j = 0; j < i; j++) {
         if (ROOMS[i].id == ROOMS[j].id) {
             throw new Error("duplicate roomId '" + ROOMS[i].id + " for indices " + i + ", " + j);
+        }
+    }
+}
+
+for (const room of ROOMS) {
+    for (const dir in room.dirs) {
+        const roomDir = room.dirs[dir as keyof typeof room.dirs];
+
+        if (roomDir === undefined) continue;
+
+        if (roomDir.type == "door" && !DOORS.some(d => d.id == roomDir.doorId)) {
+            throw new Error("roomDir '" + dir + "' of room '" + room.id + "' is door '" + roomDir.doorId + "', which is missing");
         }
     }
 }
