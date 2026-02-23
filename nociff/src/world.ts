@@ -1,10 +1,23 @@
 import { Door } from "./doors";
 import { Farnam } from "./farnam";
 import { Item } from "./items";
-import { RoomSpec } from "./rooms";
+import { Dir, Room } from "./rooms";
+
+const INV_DIRS: { [dir in Dir]: Dir } = {
+    "north": "south",
+    "east": "west",
+    "south": "north",
+    "west": "east",
+    "up": "down",
+    "down": "up",
+    "northeast": "southwest",
+    "northwest": "southeast",
+    "southeast": "northwest",
+    "southwest": "northeast"
+};
 
 export class World {
-    private rooms: Map<string, RoomSpec>;
+    private rooms: Map<string, Room>;
     private roomItems: Map<string, Item[]>;
 
     private doors: Map<string, Door>;
@@ -12,7 +25,7 @@ export class World {
 
     private farnam: Farnam;
 
-    constructor(roomsList: RoomSpec[], doorsList: Door[], farnamInitRoom: RoomSpec) {
+    constructor(roomsList: Room[], doorsList: Door[], farnamInitRoom: Room) {
         this.rooms = new Map();
         this.roomItems = new Map();
 
@@ -32,7 +45,7 @@ export class World {
         this.farnam = new Farnam(this, farnamInitRoom);
     }
 
-    public findRoom(id: string): RoomSpec | undefined {
+    public findRoom(id: string): Room | undefined {
         return this.rooms.get(id);
     }
 
@@ -54,7 +67,7 @@ export class World {
         return false;
     }
 
-    public getFarnamRoom(): RoomSpec {
+    public getFarnamRoom(): Room {
         return this.farnam.getRoom();
     }
 
@@ -64,5 +77,47 @@ export class World {
 
     public tick() {
         this.farnam.tick();
+    }
+
+    public validate(): string {
+        const missingRooms: Map<string, string[]> = new Map();
+        const incongruities: string[] = [];
+
+        for (const room of this.rooms.values()) {
+            for (const dir in room.dirs) {
+                const roomDir = room.dirs[dir as keyof typeof room.dirs];
+
+                if (roomDir === undefined) continue;
+
+                if (roomDir.type == "goto" || roomDir.type == "door") {
+                    const gotoRoom = this.rooms.get(roomDir.roomId);
+
+                    if (gotoRoom === undefined) {
+                        const sources = missingRooms.get(roomDir.roomId);
+                        if (sources === undefined) {
+                            missingRooms.set(roomDir.roomId, [room.id + "->" + dir]);
+                        } else {
+                            sources.push(room.id + "->" + dir);
+                        }
+                    } else {
+                        if (roomDir.roomId == room.id) {
+                            incongruities.push("loopback: " + room.id + " -> " + dir);
+                        } else {
+                            const invDir = gotoRoom.dirs[INV_DIRS[dir as Dir]];
+
+                            if (invDir === undefined) {
+                                incongruities.push("incongruity: " + room.id + "->" + dir + "; " + gotoRoom.id + "->" + INV_DIRS[dir as Dir] + " is missing");
+                            } else if (invDir.type != roomDir.type) {
+                                incongruities.push("incongruity: " + room.id + "->" + dir + "; " + gotoRoom.id + "->" + INV_DIRS[dir as Dir] + " is different type (" + roomDir.type + " vs. " + invDir.type + ")");
+                            } else if (invDir.roomId != room.id) {
+                                incongruities.push("incongruity: " + room.id + "->" + dir + "; " + gotoRoom.id + "->" + INV_DIRS[dir as Dir] + "->" + invDir.roomId);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return [...[...missingRooms].map(([roomId, sources]) => "missing room: " + roomId + " (" + sources.join(", ") + ")"), ...incongruities].join("\n");
     }
 }

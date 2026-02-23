@@ -23,5 +23,11 @@ export const DOORS: Door[] = [
 
         initOpen: false,
         hasDoorCloser: false
+    },
+    {
+        id: "boiler_room_tunnel_wean",
+
+        initOpen: false,
+        hasDoorCloser: false
     }
 ];

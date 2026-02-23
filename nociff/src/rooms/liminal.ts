@@ -7,9 +7,9 @@ export const LIMINAL_ROOMS: Room[] = [
         "You're in a strange space with concrete walls. The floor slants down toward Doherty Hall to your east, and double doors to your west lead to Wean Hall. There are locked pairs of double doors to your north and south, with the one to your south labeled \"DANGER: High Voltage\".",
         {
             west: goto("wean.4.400"),
-            down: goto("wean.4.400"),
+            up: goto("wean.4.400"),
             east: goto("doherty.b.mall_side_corridor.steam_tunnels"),
-            up: goto("doherty.b.mall_side_corridor.steam_tunnels"),
+            down: goto("doherty.b.mall_side_corridor.steam_tunnels"),
             north: say("The double doors are securely locked."),
             south: say("The double doors are securely locked.")
         }

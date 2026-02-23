@@ -1,6 +1,6 @@
-import { fault, Printout, output } from "./formatting";
+import { fault, Printout, output, dbg } from "./formatting";
 import { Item } from "./items";
-import { Dir, RoomDir, RoomSpec } from "./rooms";
+import { Dir, Room, RoomDir } from "./rooms";
 import { World } from "./world";
 
 const DIR_WORDS: { [word: string]: Dir } = {
@@ -69,12 +69,12 @@ function uppercase(str: string): string {
 export class Player {
     private world: World;
 
-    private room: RoomSpec;
+    private room: Room;
 
     private inv: Item[];
     private counters: Map<string, number>;
 
-    constructor(world: World, initRoom: RoomSpec) {
+    constructor(world: World, initRoom: Room) {
         this.world = world;
 
         this.room = initRoom;
@@ -84,7 +84,7 @@ export class Player {
     }
 
     public initialPrintout(): Printout[] {
-        return [{ type: "output", str: "Colossal Carnegie Adventure I\n\n" }, ...this.printRoom(), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
+        return [{ type: "output", str: "Colossal Carnegie Adventure I\n\n" }, ...this.printRoom()];
     }
 
     private printRoom(): Printout[] {
@@ -130,6 +130,10 @@ export class Player {
 
     private runUserInputInner(input: string): Printout[] {
         const words = input.replace(/\s+/g, " ").trim().split(" ");
+
+        if (words[0].startsWith("~")) {
+            return this.runCommand(words);
+        }
 
         if (words.length == 0 || words[0] == "") {
             return output("Come again?");
@@ -236,7 +240,59 @@ export class Player {
     }
 
     public runUserInput(input: string): Printout[] {
-        return [...this.runUserInputInner(input), { type: "dbg", str: "\nFarnam is in: " + this.world.getFarnamRoom().id }];
+        return this.runUserInputInner(input);
+    }
+
+    private runCommand(words: string[]): Printout[] {
+        switch (words[0].slice(1)) {
+            case "goto": {
+                const roomId = words[1] ?? "";
+                const foundRoom = this.world.findRoom(roomId);
+
+                if (foundRoom === undefined) {
+                    return fault("FAULT: no room with id '" + roomId + "'");
+                }
+
+                this.room = foundRoom;
+
+                return this.printRoom();
+            }
+            case "room": {
+                return dbg(JSON.stringify(this.room, null, 4));
+            }
+            case "inv": {
+                return dbg(JSON.stringify(this.inv));
+            }
+            case "farnam": {
+                return dbg(this.world.getFarnamRoom().id);
+            }
+            case "open": {
+                const doorId = words[1] ?? "";
+                const foundDoor = this.world.setDoorOpenState(doorId, true);
+
+                if (!foundDoor) {
+                    return fault("FAULT: no door with id '" + doorId + "'");
+                }
+
+                return dbg("true");
+            }
+            case "close": {
+                const doorId = words[1] ?? "";
+                const foundDoor = this.world.setDoorOpenState(doorId, false);
+
+                if (!foundDoor) {
+                    return fault("FAULT: no door with id '" + doorId + "'");
+                }
+
+                return dbg("true");
+            }
+            case "validate": {
+                return dbg(this.world.validate());
+            }
+            default: {
+                return fault("FAULT: unknown command '" + words[0] + "'");
+            }
+        }
     }
 
     private move(dir: Dir): Printout[] {

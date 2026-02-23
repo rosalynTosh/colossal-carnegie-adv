@@ -7,7 +7,7 @@ export interface ItemSpec {
 
     readonly nouns: ReadonlyArray<RegExp>;
 
-    readonly readStr: string;
+    readonly readStr?: string | undefined;
 }
 
 export interface Item extends ItemSpec {}

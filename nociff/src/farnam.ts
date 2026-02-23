@@ -1,4 +1,4 @@
-import { RoomSpec } from "./rooms";
+import { Room } from "./rooms";
 import { World } from "./world";
 
 interface WanderMode {
@@ -15,11 +15,11 @@ type Mode = WanderMode | TriggeredMode;
 export class Farnam {
     private world: World;
 
-    private room: RoomSpec;
+    private room: Room;
 
     private mode: Mode;
 
-    constructor(world: World, initRoom: RoomSpec) {
+    constructor(world: World, initRoom: Room) {
         this.world = world;
 
         this.room = initRoom;
@@ -29,7 +29,7 @@ export class Farnam {
         };
     }
 
-    public getRoom(): RoomSpec {
+    public getRoom(): Room {
         return this.room;
     }
 
@@ -92,8 +92,8 @@ export class Farnam {
 
         interface FrontNode {
             i: number;
-            stepRoom: RoomSpec | null;
-            room: RoomSpec;
+            stepRoom: Room | null;
+            room: Room;
         }
 
         const seen = new Set([this.room.id]);
