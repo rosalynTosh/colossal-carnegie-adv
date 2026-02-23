@@ -289,6 +289,12 @@ export class Player {
             case "validate": {
                 return dbg(this.world.validate());
             }
+            case "nodes": {
+                return dbg(JSON.stringify([...this.world.rooms.values()].map(r => ({
+                    id: r.id,
+                    dirs: Object.fromEntries(Object.entries(r.dirs).map(([dir, roomDir]) => [dir, roomDir !== undefined && (roomDir.type == "goto" || roomDir.type == "door") ? roomDir.roomId : null]).filter(([_, d]) => d !== null && this.world.rooms.has(d)))
+                })), null, 4));
+            }
             default: {
                 return fault("FAULT: unknown command '" + words[0] + "'");
             }

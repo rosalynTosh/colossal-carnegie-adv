@@ -17,13 +17,13 @@ const INV_DIRS: { [dir in Dir]: Dir } = {
 };
 
 export class World {
-    private rooms: Map<string, Room>;
-    private roomItems: Map<string, Item[]>;
+    public rooms: Map<string, Room>;
+    public roomItems: Map<string, Item[]>;
 
-    private doors: Map<string, Door>;
-    private doorsOpen: Map<string, boolean>;
+    public doors: Map<string, Door>;
+    public doorsOpen: Map<string, boolean>;
 
-    private farnam: Farnam;
+    public farnam: Farnam;
 
     constructor(roomsList: Room[], doorsList: Door[], farnamInitRoom: Room) {
         this.rooms = new Map();
