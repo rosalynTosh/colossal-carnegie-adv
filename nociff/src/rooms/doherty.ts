@@ -55,6 +55,7 @@ export const DOHERTY_ROOMS: Room[] = [
         northeast: goto("doherty.b.under_stairs.art"),
         east: goto("doherty.b.mall_side_corridor.mural"),
         west: goto("liminal.ramp"),
+        up: goto("liminal.ramp"),
         down: goto("doherty.c.steam_tunnel.west")
     }),
     dohertyRoom("b.mall_side_corridor.mural", {

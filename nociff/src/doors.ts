@@ -29,5 +29,17 @@ export const DOORS: Door[] = [
 
         initOpen: false,
         hasDoorCloser: false
+    },
+    {
+        id: "wean_4703",
+
+        initOpen: false,
+        hasDoorCloser: false
+    },
+    {
+        id: "wean_4706",
+
+        initOpen: false,
+        hasDoorCloser: false
     }
 ];

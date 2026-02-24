@@ -1,9 +1,9 @@
 import { Item } from "../items";
 import { basicRoom, goto, Room, say } from "../rooms";
 
-function ord(n: number) {
-    return n + (n >= 11 && n <= 13 ? "th" : n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
-}
+// function ord(n: number) {
+//     return n + (n >= 11 && n <= 13 ? "th" : n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
+// }
 
 function weanRoom(floor: number, idPart: string, short: string, long: string, dirs: Room["dirs"], items: Item[] = [], itemStrs: { [itemId: string]: string } = {}): Room {
     return basicRoom(
@@ -21,7 +21,7 @@ function weanStairRoomBuilder(stairId: string, minFloor: number, maxFloor: numbe
         return basicRoom(
             "wean.stairs." + stairId + "." + floor,
             "Wean Stairwell " + stairId.toUpperCase() + ": Floor " + floor,
-            (long == "" ? "" : long + " ") + "You can go " + (floor == minFloor ? "up" : floor == maxFloor ? "down" : "up or down"),
+            (long == "" ? "" : long + " ") + "You can go " + (floor == minFloor ? "up" : floor == maxFloor ? "down" : "up or down") + ".",
             {
                 down: floor == minFloor ? undefined : goto("wean.stairs." + stairId + "." + (floor - 1)),
                 up: floor == maxFloor ? undefined : goto("wean.stairs." + stairId + "." + (floor + 1)),
@@ -45,7 +45,7 @@ function weanLobbyNorthRoom(floor: number, long: string, dirs: Room["dirs"] = {}
         floor,
         "north",
         "Wean " + floor + " Lobby North",
-        (long == "" ? "" : long + " ") + "Staircase A1 goes " + (floor == LOBBY_MIN_FLOOR ? "up" : floor == LOBBY_MAX_FLOOR ? "down" : "up or down"),
+        (long == "" ? "" : long + " ") + "Staircase A1 runs " + (floor == LOBBY_MIN_FLOOR ? "up" : floor == LOBBY_MAX_FLOOR ? "down" : "up and down") + ".",
         {
             west: goto("wean." + floor + ".200"),
             east: goto("wean." + floor + ".300"),
@@ -138,7 +138,7 @@ export const WEAN_ROOMS: Room[] = [
         1,
         "lobby",
         "Wean 1 Lobby",
-        "You're in the wood-panelled 1st floor lobby of Wean Hall. Hamerschlag Drive is visible through pair of glass doors to your north. The 1300 corridor is to your east. Staircase A2 goes up.",
+        "You're in the wood-panelled 1st floor lobby of Wean Hall. Hamerschlag Drive is visible through pair of glass doors to your north. The 1300 corridor is to your east. Staircase A1 runs up.",
         {
             east: goto("wean.1.300"),
             up: goto("wean.2.lobby"),
@@ -172,7 +172,7 @@ export const WEAN_ROOMS: Room[] = [
         2,
         "lobby",
         "Wean 2 Lobby",
-        "You're in the depressing 2nd floor lobby of Wean Hall. Dingy vending machines line the wall to your south, one of which promises hot coffee for a single quarter. A door stamped \"authorized personnel only\" sits to your west under a large klaxon. The 2300 corridor is to your east. Staircase A2 goes up or down.",
+        "You're in the depressing 2nd floor lobby of Wean Hall. Dingy vending machines line the wall to your south, one of which promises hot coffee for a single quarter. A door stamped \"authorized personnel only\" sits to your west under a large klaxon. The 2300 corridor is to your east. Staircase A1 runs up and down.",
         {
             east: goto("wean.2.300"),
             west: say("The door is securely locked."),
@@ -184,7 +184,7 @@ export const WEAN_ROOMS: Room[] = [
         2,
         "You're in an uninteresting corridor. A door stands ajar at the east end of the hallway. The 2nd floor lobby is to your west. A door to stairwell A2 is to your north.",
         {
-            east: goto("wean.2.340_landing"),
+            east: goto("wean.2.340"),
             west: goto("wean.2.lobby"),
             south: undefined
         }
@@ -216,14 +216,14 @@ export const WEAN_ROOMS: Room[] = [
 
     weanLobbyNorthRoom(
         3,
-        "You're in the 3rd floor lobby of Wean Hall, deep in its concrete underbelly. The lobby continues south. The 3200 corridor runs west and the 3300 corridor runs east.",
+        "You're in the 3rd floor lobby of Wean Hall, deep in its concrete underbelly. The lobby continues to your south. The 3200 corridor runs west and the 3300 corridor runs east.",
         {
             down: goto("wean.2.lobby")
         }
     ),
     weanLobbySouthRoom(
         3,
-        "You're in the 3rd floor lobby of Wean Hall. The lobby continues north. The 3100 corridor runs west, the 3400 corridor runs east, and the 3500 corridor runs to your south.",
+        "You're in the 3rd floor lobby of Wean Hall. The lobby continues to your north. The 3100 corridor runs west, the 3400 corridor runs east, and the 3500 corridor runs to your south.",
         {
             south: goto("wean.3.500"),
             east: goto("wean.3.400_by_700")
@@ -391,309 +391,633 @@ export const WEAN_ROOMS: Room[] = [
         }
     ),
     
-    // // 4
+    // 4
 
-    // weanLobbyNorthRoom(
-    //     4,
-    //     "You're in the 4th floor lobby of Wean Hall. "
-    // ),
-    // weanLobbySouthRoom(),
-    // weanCorridor100Room(),
-    // weanCorridor200Room(),
-    // weanCorridor300Room(),
-    // weanCorridor400Room(),
-    // weanRoom(
-    //     4,
-    //     "600",
-    //     "600 Corridor (Murder Hallway)"
-    // ),
-    // weanRoom(
-    //     4,
-    //     "600_south",
-    //     "600 Corridor (Murder Hallway)"
-    // ),
-    // weanRoom(
-    //     4,
-    //     "700",
-    //     "700 Corridor (Murder Hallway)"
-    // ),
-    // weanRoom(
-    //     4,
-    //     "700_south",
-    //     "700 Corridor (Murder Hallway)"
-    // ),
-    // weanRoom(
-    //     4,
-    //     "sorrels",
-    //     ": Sorrels Library"
-    // ),
-    // weanRoom(
-    //     4,
-    //     "703",
-    //     "703"
-    // ),
-    // weanRoom(
-    //     4,
-    //     "706",
-    //     "706"
-    // ),
+    weanLobbyNorthRoom(
+        4,
+        "You're in the 4th floor lobby of Wean Hall. The lobby continues to your south. The 4200 corridor runs west, the 4300 corridor runs east, and the bridge to Newell-Simon Hall is to your north.",
+        {
+            north: goto("nsh_bridge")
+        }
+    ),
+    weanLobbySouthRoom(
+        4,
+        "You're in the 4th floor lobby of Wean Hall. The lobby continues to your north. The 4100 corridor runs west, Sorrels library is to your east, the 4600 corridor runs south, and the connection to Scott Hall and Hamerschlag Hall is to your southwest. A large bulletin board wall on the north prominently displays an ad for \"KGBuggy\" in a place called the \"Kage,\" which it describes as being located in the Stever basement.",
+        {
+            east: goto("wean.4.sorrels"),
+            south: goto("wean.4.600"),
+            southwest: goto("scott.4s.from_wean_lobby")
+        }
+    ),
+    weanCorridor100Room(
+        4,
+        "You're in a tall corridor with whitewashed concrete walls. A hushed silence fills the space. You presume some very serious work is ongoing. The 4th floor lobby is to your east. A door to stairwell D is to your south. At the west end of the corridor is a door to Scott Hall's 4th floor.",
+        {
+            west: goto("scott.4s.ruge")
+        }
+    ),
+    weanCorridor200Room(
+        4,
+        "You're in a tall corridor with cozy decor. It's confortably quiet. The 4th floor lobby is to your east. You can cut across to the 4100 corridor to your south."
+    ),
+    weanCorridor300Room(
+        4,
+        "You're in a long corridor with squeaky wooden floors. The 4th floor lobby is to your west. You can cross over to the 4400 corridor to your south. A door to stairwell A2 is to your north."
+    ),
+    weanCorridor400Room(
+        4,
+        "You're in a small section of corridor cut off from the 4th floor lobby by Sorrels library. You can cross over to the 4300 corridor to your north or into Doherty B to your east. A door to stairwell B is to your south.",
+        {
+            west: say("The door to Sorrels is locked and alarmed from this direction."),
+            east: goto("liminal.ramp"),
+            down: goto("liminal.ramp")
+        }
+    ),
+    weanRoom(
+        4,
+        "600",
+        "Murder Hallway (Wean 4600 Corridor)",
+        "You're in a corridor buried under the Mall. The 4th floor lobby is to your north. You can continue further south. A narrower corridor forks off to your east. A door to stairwell C1 is to your west.",
+        {
+            north: goto("wean.4.south"),
+            south: goto("wean.4.600_south"),
+            east: goto("wean.4.700"),
+            west: goto("wean.stairs.c1.4")
+        }
+    ),
+    weanRoom(
+        4,
+        "600_south",
+        "Murder Hallway (Wean 4600 Corridor)",
+        "You're further down in a corridor buried under the Mall. The 4th floor lobby is to your north, but out of sight in the twisty hallways. A narrow corridor branches off to your east. A door to stairwell C2 is to your west.",
+        {
+            north: goto("wean.4.600"),
+            east: goto("wean.4.700_south"),
+            west: goto("wean.stairs.c2.4")
+        }
+    ),
+    weanRoom(
+        4,
+        "700",
+        "Murder Hallway (Wean 4700 Corridor)",
+        "You're in a loop just off of the main murder hallway, which is to your west. The walls are drywall instead of concrete, and the floor is carpeted. You can continue southwest.",
+        {
+            west: goto("wean.4.600"),
+            southwest: goto("wean.4.700_south"),
+            east: {
+                type: "door",
+
+                roomId: "wean.4.703",
+
+                doorId: "wean_4703",
+
+                doorNouns: [], // TODO
+                canOpen: false,
+                canClose: true,
+                closeOnUse: false,
+                keyItem: null
+            }
+        }
+    ),
+    weanRoom(
+        4,
+        "700_south",
+        "Murder Hallway (Wean 4700 Corridor)",
+        "You're in a loop just off of the main murder hallway, the more distant side of which is now to your west. The 4700 corridor runs north. You note an abnormally large parcel slot in the wall around the corner.",
+        {
+            northeast: goto("wean.4.700"),
+            west: goto("wean.4.600_south"),
+            north: {
+                type: "door",
+                say: "You climb through the parcel slot with some difficulty, landing face-first in a colorful lavender-scented sea of hanging shirts. After wading through the clothes rack, you emerge into a softly lit room.",
+
+                roomId: "wean.4.706",
+
+                doorId: "wean_4706",
+
+                doorNouns: [], // TODO
+                canOpen: true,
+                canClose: true,
+                closeOnUse: false,
+                keyItem: null
+            }
+        }
+    ),
+    weanRoom(
+        4,
+        "sorrels",
+        "Sorrels Library",
+        "You find yourself in a modestly sized, skylit library on the 4th floor of Wean Hall. The lobby is to your west. You notice a print station just to the side of the door, at which a partially-folded README is present.",
+        {
+            west: goto("wean.4.south"),
+            east: goto("wean.4.400")
+        }
+    ),
+    weanRoom(
+        4,
+        "703",
+        "Faculty Senate Conference Room (Wean 4703)",
+        "You find yourself in a room with a large table and a dozen or so green-upholstered chairs. The furniture and decor of the room harkens back to the 1980's. You note a door on the east wall which looks particularly out of place. The hallway is to your west.",
+        {
+            east: {
+                type: "door",
+
+                roomId: "steam_tunnel.wean",
+
+                doorId: "steam_tunnel_to_4703",
+
+                doorNouns: [], // TODO
+                canOpen: false,
+                canClose: true,
+                closeOnUse: false,
+                keyItem: null
+            },
+            west: {
+                type: "door",
+
+                roomId: "wean.4.700",
+
+                doorId: "wean_4703",
+
+                doorNouns: [], // TODO
+                canOpen: true,
+                canClose: true,
+                closeOnUse: false,
+                keyItem: null
+            }
+        }
+    ),
+    weanRoom(
+        4,
+        "706",
+        "Wean 4706",
+        "You find yourself in a cozy room which seems to be someone's home. You note the presence of a twin XL mattress, a nightstand, a dresser, a rack of hanging shirts, a minifridge, a standalone sink rigged up to a tank of water, and numerous pride flags and protest signs adorning the walls. You best not disrupt this place. The parcel slot you climbed in through is to your south.",
+        {
+            south: {
+                type: "door",
+
+                roomId: "wean.4.700_south",
+
+                doorId: "wean_4706",
+
+                doorNouns: [],
+                canOpen: true,
+                canClose: false,
+                closeOnUse: false,
+                keyItem: null
+            }
+        }
+    ),
     
     // // 5
 
-    // weanLobbyNorthRoom(),
-    // weanLobbySouthRoom(),
-    // weanCorridor100Room(),
-    // weanCorridor200Room(),
-    // weanCorridor300Room(),
-    // weanCorridor400Room(),
-    // weanRoom(
-    //     5,
-    //     "200_clusters",
-    //     "200 Corridor"
-    // ),
-    // weanRoom(
-    //     5,
-    //     "201",
-    //     "201 (Mac Cluster)"
-    // ),
-    // weanRoom(
-    //     5,
-    //     "202",
-    //     "202 (Windows Cluster)"
-    // ),
-    // weanRoom(
-    //     5,
-    //     "207",
-    //     "207 (Linux Cluster)"
-    // ),
-    // weanRoom(
-    //     5,
-    //     "403",
-    //     "403"
-    // ),
+    weanLobbyNorthRoom(
+        5,
+        "You're in the 5th floor lobby of Wean Hall. The lobby continues to your south. The 5200 corridor runs west and the 4300 corridor runs east.",
+        {
+            west: goto("wean.5.200_clusters")
+        }
+    ),
+    weanLobbySouthRoom(
+        5,
+        "You're in the 5th floor lobby of Wean Hall. The lobby continues to your north. The 5100 corridor runs west, the 5400 corridor runs east, and La Prima is just to your south.",
+        {
+            south: goto("la_prima")
+        }
+        // PUT A README HERE
+    ),
+    weanCorridor100Room(
+        5,
+        "You're in a tall corridor with whitewashed concrete walls. The 5th floor lobby is to your east. A door to stairwell D is to your south. At the west end of the corridor is a connection to Scott Hall's 5th floor.",
+        {
+            west: goto("scott.5")
+        }
+    ),
+    weanCorridor200Room(
+        5,
+        "You're in a narrow corridor with many twists and turns. The walls are white with red trim. You can pass through a door to your east to access the rest of the 5200 corridor, or cut across to the 5100 corridor to your south.",
+        {
+            east: goto("wean.5.200_clusters")
+        }
+    ),
+    weanCorridor300Room(
+        5,
+        "You're in an uninteresting corridor lined with classrooms. The 5th floor lobby is to your west. You can cross over to the 5400 corridor to your south. A door to stairwell A2 is to your north."
+    ),
+    weanCorridor400Room(
+        5,
+        "You're in a corridor overlooking Sorrels library, lined with classrooms on its north wall. One to your northwest has its doors open and a strange humming noise seems to be emanating from within it. You can cross over to the 4300 corridor to your north or into Doherty A to your east. A door to stairwell B is to your south.",
+        {
+            northwest: goto("wean.5.403"),
+            east: goto("liminal.ground"),
+            down: say("The balcony overlooking Sorrels is lined with glass; jumping down is infeasible.")
+        }
+    ),
+    weanRoom(
+        5,
+        "200_clusters",
+        "Wean 5200 Corridor",
+        "You're in a short stretch of corridor lined with open doors. The 5th floor lobby is to your east. To your north, south, and southwest are the Windows, Mac, and Linux clusters respectively.",
+        {
+            north: goto("wean.5.202"),
+            south: goto("wean.5.201"),
+            southwest: goto("wean.5.207"),
+            west: say("The door to the rest of the 5200 corridor is alarmed."),
+            east: goto("wean.5.north")
+        }
+    ),
+    weanRoom(
+        5,
+        "201",
+        "Mac Cluster (Wean 5201)",
+        "You find yourself in a warped mockery of Cluster, which is full of Mac workstations, whiteboards, and green chairs. Doors to the hallway are to your north.",
+        {
+            north: goto("wean.5.200_clusters")
+        }
+    ),
+    weanRoom(
+        5,
+        "202",
+        "Windows Cluster (Wean 5202)",
+        "You find yourself in Cluster, a room full of Windows workstations, whiteboards, and green chairs. Doors to the hallway are to your south.",
+        {
+            south: goto("wean.5.200_clusters")
+        }
+        // TODO: add gong
+    ),
+    weanRoom(
+        5,
+        "207",
+        "Linux Cluster (Wean 5207)",
+        "You find yourself in the Linux cluster, a claustrophic room full of Linux workstations, whiteboards, and green chairs. A door to the hallway is to your northeast.",
+        {
+            northeast: goto("wean.5.200_clusters")
+        }
+    ),
+    weanRoom(
+        5,
+        "403",
+        "GBM Room (Wean 54xx)",
+        "You're in a moderately sized lecture hall. A humming noise, reminiscent of the call of the plainfin midshipman, reverberates through the room from an unidentifiable source. The room is empty, but [TODO] is scrawled upon the blackboard. The door is to your southeast.",
+        {
+            southeast: goto("wean.5.400")
+        }
+    ),
 
-    // // 6
+    // 6
 
-    // weanLobbyNorthRoom(),
-    // weanLobbySouthRoom(),
-    // weanCorridor100Room(),
-    // weanCorridor200Room(),
-    // weanCorridor300Room(),
-    // weanCorridor400Room(),
-    // weanRoom(
-    //     6,
-    //     "parapet",
-    //     "Balacing above La Prima",
-    //     "You're standing on a parapet about 8 inches wide, balancing above La Prima to your south or a safe hop down to Wean 6 to your north.",
-    //     {
-    //         north: goto("wean.6.south"),
-    //         south: goto("la_prima_counter"),
-    //         down: say("You have two options, and you should surely specify which.")
-    //     }
-    // ),
+    weanLobbyNorthRoom(
+        6,
+        "You're in the 6th floor lobby of Wean Hall. The lobby continues to your south. The 6200 corridor runs west and the 6300 corridor runs east."
+    ),
+    weanLobbySouthRoom(
+        6,
+        "You're in the 6th floor lobby of Wean Hall, which overlooks La Prima to your south. You could possibly climb up onto the parapet. The lobby continues to your north. The 6100 corridor runs west and the 6400 corridor runs east.",
+        {
+            south: goto("wean.6.parapet"),
+            up: goto("wean.6.parapet")
+        }
+    ),
+    weanCorridor100Room(
+        6,
+        "You're in a dull corridor with a large map of Pittsburgh hanging on one wall. The 6th floor lobby is to your east. A door to stairwell D is to your south. At the west end of the corridor is a connection to Scott Hall's 6th floor.",
+        {
+            west: goto("scott.6")
+        }
+    ),
+    weanCorridor200Room(
+        6,
+        "You're in a dull corridor. The 6th floor lobby is to your east. At the far west end you notice a jail glyph on the wall. You can cut across to the 6100 corridor to your south."
+    ),
+    weanCorridor300Room(
+        6,
+        "You're in a dull corridor. The 6th floor lobby is to your west. You can cross over to the 6400 corridor to your south. A door to stairwell A2 is to your north."
+    ),
+    weanCorridor400Room(
+        6,
+        "You're in a dull corridor. The 6th floor lobby is to your west. You can cross over to the 6300 corridor to your north or into Doherty Hall to your east. A door to stairwell B is to your south.",
+        {
+            east: goto("liminal.6")
+        }
+    ),
+    weanRoom(
+        6,
+        "parapet",
+        "Balacing above La Prima",
+        "You're standing on a parapet about 8 inches wide, balancing above La Prima to your south or a safe hop down to Wean 6 to your north.",
+        {
+            north: goto("wean.6.south"),
+            south: goto("la_prima_counter"),
+            down: say("You have two options, and you surely should specify which.")
+        }
+    ),
     
-    // // 7
+    // 7
 
-    // weanLobbyNorthRoom(),
-    // weanLobbySouthRoom(),
-    // weanCorridor100Room(),
-    // weanCorridor200Room(),
-    // weanCorridor300Room(),
-    // weanCorridor400Room(),
-    // weanRoom(
-    //     7,
-    //     "500",
-    //     "500 (Inside the Turtle Head)"
-    // ),
+    weanLobbyNorthRoom(
+        7,
+        "You're in the 7th floor lobby of Wean Hall. The lobby continues to your south. The 7200 corridor runs west and the 7300 corridor runs east."
+    ),
+    weanLobbySouthRoom(
+        7,
+        "You're in the 7th floor lobby of Wean Hall. The lobby continues to your north. The 7100 corridor runs west, the 7400 corridor runs east, and two pairs of double doors to your south go to the auditorium inside Wean Hall's turtle head.",
+        {
+            south: goto("wean.7.500")
+        }
+    ),
+    weanCorridor100Room(
+        7,
+        "You're in an uninteresting corridor. The 7th floor lobby is to your east. A door to stairwell D is to your south."
+    ),
+    weanCorridor200Room(
+        7,
+        "You're in an uninteresting corridor. The 7th floor lobby is to your east. You can cut across to the 7100 corridor to your south."
+    ),
+    weanCorridor300Room(
+        7,
+        "You're in an uninteresting corridor. The 7th floor lobby is to your west. You can cross over to the 6400 corridor to your south. A door to stairwell A2 is to your north."
+    ),
+    weanCorridor400Room(
+        7,
+        "You're in an uninteresting corridor. The 7th floor lobby is to your west. You can cross over to the 7300 corridor to your north or into Doherty Hall to your east. A door into stairwell B is to your south.",
+        {
+            east: goto("liminal.7")
+        }
+    ),
+    weanRoom(
+        7,
+        "500",
+        "Inside the Turtle Head (Wean 7500)",
+        "You find yourself in a wood-panelled lecture hall of great size. To your west is an emergency exit door, and the double doors back to Wean 7 are at the back of the lecture hall to your north.",
+        {
+            west: goto("outside_la_prima", "Outside the door, stairs take you down to the mall."),
+            north: goto("wean.7.south")
+        }
+    ),
 
-    // // 8
+    // 8
 
-    // weanLobbyNorthRoom(),
-    // weanLobbySouthRoom(),
-    // weanCorridor100Room(),
-    // weanCorridor200Room(),
-    // weanCorridor300Room(),
-    // weanCorridor400Room(),
-    // weanRoom(
-    //     8,
-    //     "400_outside_427",
-    //     "400 Corridor"
-    // ),
-    // weanRoom(
-    //     8,
-    //     "427",
-    //     "427"
-    // ),
+    weanLobbyNorthRoom(
+        8,
+        "You're in the 8th floor lobby of Wean Hall. The lobby continues to your south. The 8200 corridor runs west and the 8300 corridor runs east."
+    ),
+    weanLobbySouthRoom(
+        8,
+        "You're in the 8th floor lobby of Wean Hall. The lobby continues to your north. The 8100 corridor runs west and the 8400 corridor runs east.",
+        {
+            east: goto("wean.8.400_outside_427")
+        }
+    ),
+    weanCorridor100Room(
+        8,
+        "You're in an uninteresting corridor. The 8th floor lobby is to your east. A door to stairwell D is to your south."
+    ),
+    weanCorridor200Room(
+        8,
+        "You're in an uninteresting corridor. The 8th floor lobby is to your east. You can cut across to the 8100 corridor to your south."
+    ),
+    weanCorridor300Room(
+        8,
+        "You're in an uninteresting corridor. The 8th floor lobby is to your west. You can cross over to the 8400 corridor to your south. A door to stairwell A2 is to your north."
+    ),
+    weanCorridor400Room(
+        8,
+        "You're in an uninteresting corridor. The 8th floor lobby is in the distance to your west, past some strips of blue tape on the floor. You can cross over to the 8300 corridor to your north or into Doherty Hall to your east. A door into stairwell B is to your south.",
+        {
+            west: goto("wean.8.400_outside_427"),
+            east: goto("liminal.8")
+        }
+    ),
+    weanRoom(
+        8,
+        "400_outside_427",
+        "Wean 8400 Corridor",
+        "You're standing between several strips of blue floor tape in an uninteresting corridor. The 8th floor lobby is to your west and the corridor continues east. Room 8427 is open to your north.",
+        {
+            west: goto("wean.8.south"),
+            east: goto("wean.8.400"),
+            north: goto("wean.8.427")
+        }
+    ),
+    weanRoom(
+        8,
+        "427",
+        "CtFwS Judges' Room (Wean 8427)",
+        "You find yourself in a small classroom which seems to be serving the purpose of Judges' Room for a game of Capture the Flag with Stuff. The door is to your south.", // TODO: add stuff
+        {
+            south: goto("wean.8.400_outside_427")
+        }
+    ),
     
-    // // 9
+    // 9
+
+    // Stair A2
+
+    weanStairA2Room(
+        1,
+        "A door with a large 1 is to your south.",
+        {
+            south: goto("wean.1.300"),
+            up: goto("wean.stairs.a2.1_1_2")
+        }
+    ),
+    basicRoom(
+        "wean.stairs.a2.1_1_2",
+        "Wean Stairwell A2: Floor 1\xbd",
+        "A door to the loading dock is to your north. You can go up or down.",
+        {
+            north: goto("hamersclag_drive.wean_loading_dock"),
+            down: goto("wean.stairs.a2.1"),
+            up: goto("wean.stairs.a2.2")
+        }
+    ),
+    weanStairA2Room(
+        2,
+        "A door with a large 2 is to your south.",
+        {
+            south: goto("wean.2.300"),
+            down: goto("wean.stairs.a2.1_1_2")
+        }
+    ),
+    weanStairA2Room(
+        3,
+        "A door with a large 3 is to your south.",
+        {
+            south: goto("wean.3.300")
+        }
+    ),
+    weanStairA2Room(
+        4,
+        "A door with a large 4 is to your south.",
+        {
+            south: goto("wean.4.300")
+        }
+    ),
+    weanStairA2Room(
+        5,
+        "A door with a large 5 is to your south.",
+        {
+            south: goto("wean.5.300")
+        }
+    ),
+    weanStairA2Room(
+        6,
+        "A door with a large 6 is to your south.",
+        {
+            south: goto("wean.6.300")
+        }
+    ),
+    weanStairA2Room(
+        7,
+        "A door with a large 7 is to your south.",
+        {
+            south: goto("wean.7.300")
+        }
+    ),
+    weanStairA2Room(
+        8,
+        "A door with a large 8 is to your south.",
+        {
+            south: goto("wean.8.300")
+        }
+    ),
+    weanStairA2Room(
+        9,
+        "You notice the stairwell has changed dimensions slightly. The roof is sloped and a gap in the south wall overlooks the door to floor 8. Graffiti covers the walls. A door with a card scanner is to your south.",
+        {
+            south: say("The door is securely locked.")
+        }
+    ),
+
+    // Stair B
+
+    weanStairBRoom(
+        3,
+        "A door with a large 3 is to your north.",
+        {
+            north: goto("wean.3.400")
+        }
+    ),
+    weanStairBRoom(
+        4,
+        "A door with a large 4 is to your north.",
+        {
+            north: goto("wean.4.400")
+        }
+    ),
+    weanStairBRoom(
+        5,
+        "A door with a large 5 is to your north.",
+        {
+            north: goto("wean.5.400")
+        }
+    ),
+    weanStairBRoom(
+        6,
+        "A door with a large 6 is to your north.",
+        {
+            north: goto("wean.6.400")
+        }
+    ),
+    weanStairBRoom(
+        7,
+        "A door with a large 7 is to your north.",
+        {
+            north: goto("wean.7.400")
+        }
+    ),
+    weanStairBRoom(
+        8,
+        "A door with a large 8 is to your north.",
+        {
+            north: goto("wean.8.400")
+        }
+    ),
+
+    // Stair C1
+
+    weanStairC1Room(
+        3,
+        "stair 3",
+        {
+            east: goto("wean.3.500")
+        }
+    ),
+    weanStairC1Room(
+        4,
+        "stair 4",
+        {
+            east: goto("wean.4.600")
+        }
+    ),
+
+    // Stair C2
+
+    weanStairC2Room(
+        3,
+        "stair 3",
+        {
+            east: goto("wean.3.spooky_closet")
+        }
+    ),
+    weanStairC2Room(
+        4,
+        "stair 4",
+        {
+            east: goto("wean.4.600_south")
+        }
+    ),
+
+    // Stair D
+
+    weanStairDRoom(
+        3,
+        "A door with a large 3 is to your north.",
+        {
+            north: goto("wean.3.100")
+        }
+    ),
+    weanStairDRoom(
+        4,
+        "A door with a large 4 is to your north.",
+        {
+            north: goto("wean.4.100")
+        }
+    ),
+    weanStairDRoom(
+        5,
+        "A door with a large 5 is to your north.",
+        {
+            north: goto("wean.5.100")
+        }
+    ),
+    weanStairDRoom(
+        6,
+        "A door with a large 6 is to your north.",
+        {
+            north: goto("wean.6.100")
+        }
+    ),
+    weanStairDRoom(
+        7,
+        "A door with a large 7 is to your north.",
+        {
+            north: goto("wean.7.100")
+        }
+    ),
+    weanStairDRoom(
+        8,
+        "A door with a large 8 is to your north.",
+        {
+            north: goto("wean.8.100")
+        }
+    ),
+    weanStairDRoom(
+        9,
+        "Unusual doors sit to your north and west. Light streams through a small hole drilled in the east wall.",
+        {
+            north: say("The door to your north is securely locked."),
+            west: say("The door to your west is securely locked.")
+        }
+    ),
 ];
-
-// for (let i = 1; i <= 8; i++) {
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean." + i + ".north",
-//         "Wean " + i + " Lobby North",
-//         "The " + (i >= 3 ? i + "200 corridor runs west and the " : "") + i + "300 corridor runs east. You can go south. Staircase A1 runs " + (i == 1 ? "up" : i == 8 ? "down" : "up and down") + ".",
-//         {
-//             west: goto("wean." + i + ".200"),
-//             east: goto("wean." + i + ".300"),
-//             south: goto("wean." + i + ".south"),
-//             down: goto("wean." + (i - 1) + ".north"),
-//             up: goto("wean." + (i + 1) + ".north")
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean." + i + ".south",
-//         "Wean " + i + " Lobby South",
-//         (i >= 3 ? "The " + i + "100 corridor runs west and the " + i + "400 corridor runs east. " : "") + "You can go north.",
-//         {
-//             west: goto("wean." + i + ".100"),
-//             east: goto("wean." + i + ".400"),
-//             north: goto("wean." + i + ".north")
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean." + i + ".300",
-//         "Wean " + i + "300 Corridor",
-//         "You're in a corridor. The " + ord(i) + " floor lobby is to your west." + (i >= 3 ? " You can cross over to the " + i + "400 corridor to your south." : "") + " A door to stairwell A2 is to your north.",
-//         {
-//             west: goto("wean." + i + ".north"),
-//             south: goto("wean." + i + ".400"),
-//             north: goto("wean.stairs.a2." + i)
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean.stairs.a2." + i,
-//         "Wean Stairwell A2: Floor " + i,
-//         "A door with a large " + i + " is to your south. You can go " + (i == 1 ? "up" : "up or down") + ".",
-//         {
-//             south: goto("wean." + i + ".300"),
-//             down: goto("wean.stairs.a2." + (i - 1)),
-//             up: goto("wean.stairs.a2." + (i + 1))
-//         }
-//     ));
-// }
-
-// for (let i = 3; i <= 8; i++) {
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean." + i + ".200",
-//         "Wean " + i + "200 Corridor",
-//         "You're in a corridor. The " + ord(i) + " floor lobby is to your east. You can cross over to the " + i + "100 corridor to your south.",
-//         {
-//             east: goto("wean." + i + ".north"),
-//             south: goto("wean." + i + ".100")
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean." + i + ".100",
-//         "Wean " + i + "100 Corridor",
-//         "You're in a corridor. The " + ord(i) + " floor lobby is to your east. You can cross over to the " + i + "200 corridor to your north. A door to stairwell D is to your south.",
-//         {
-//             east: goto("wean." + i + ".south"),
-//             north: goto("wean." + i + ".200"),
-//             south: goto("wean.stairs.d." + i)
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean." + i + ".400",
-//         "Wean " + i + "400 Corridor",
-//         "You're in a corridor. The " + ord(i) + " floor lobby is to your west. You can cross over to the " + i + "300 corridor to your north. A door to stairwell B is to your south.",
-//         {
-//             west: goto("wean." + i + ".south"),
-//             north: goto("wean." + i + ".300"),
-//             south: goto("wean.stairs.b." + i)
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean.stairs.b." + i,
-//         "Wean Stairwell B: Floor " + i,
-//         "A door with a large " + i + " is to your north. You can go " + (i == 3 ? "up" : i == 8 ? "down" : "up or down") + ".",
-//         {
-//             north: goto("wean." + i + ".400"),
-//             down: goto("wean.stairs.b." + (i - 1)),
-//             up: goto("wean.stairs.b." + (i + 1))
-//         }
-//     ));
-
-//     WEAN_ROOMS.push(basicRoom(
-//         "wean.stairs.d." + i,
-//         "Wean Stairwell D: Floor " + i,
-//         "A door with a large " + i + " is to your north. You can go " + (i == 3 ? "up" : "up or down") + ".",
-//         {
-//             north: goto("wean." + i + ".100"),
-//             down: goto("wean.stairs.d." + (i - 1)),
-//             up: goto("wean.stairs.d." + (i + 1))
-//         }
-//     ));
-// }
-
-// WEAN_ROOMS.push(basicRoom(
-//     "wean.stairs.a2.1_2",
-//     "Wean Stairwell A2: Floor 1 1/2",
-//     "A door to the loading dock is to your north. You can go up or down.",
-//     {
-//         north: say("The door to your north is securely locked."),
-//         down: goto("wean.stairs.a2.1"),
-//         up: goto("wean.stairs.a2.2")
-//     }
-// ));
-
-// WEAN_ROOMS.push(basicRoom(
-//     "wean.stairs.a2.9",
-//     "Wean Stairwell A2: Floor 9",
-//     "You notice the stairwell has changed dimensions slightly. The roof is sloped and a gap in the south wall overlooks the door to floor 8. Graffiti covers the walls. A door with a card scanner is to your south. You can go down.",
-//     {
-//         south: say("The door is securely locked."),
-//         down: goto("wean.stairs.a2.8")
-//     }
-// ));
-
-// WEAN_ROOMS.push(basicRoom(
-//     "wean.stairs.d.9",
-//     "Wean Stairwell D: Floor 9",
-//     "Unusual doors sit to your north and west. Light streams through a small hole drilled in the east wall. You can go down.",
-//     {
-//         north: say("The door to your north is securely locked."),
-//         west: say("The door to your west is securely locked."),
-//         down: goto("wean.stairs.d.8")
-//     }
-// ));
-
-// WEAN_ROOMS.find(r => r.id == "wean.1.north")!.dirs.north = goto("hamerschlag_drive.outside_wean");
-// WEAN_ROOMS.find(r => r.id == "wean.1.300")!.dirs.east = goto("wean.1.340");
-// delete WEAN_ROOMS.find(r => r.id == "wean.1.300")!.dirs.south;
-
-// WEAN_ROOMS.find(r => r.id == "wean.2.300")!.dirs.east = goto("wean.2.340");
-// delete WEAN_ROOMS.find(r => r.id == "wean.2.300")!.dirs.south;
-
-// WEAN_ROOMS.find(r => r.id == "wean.3.100")!.dirs.southwest = goto("wean.3.print_room");
-// WEAN_ROOMS.find(r => r.id == "wean.3.south")!.dirs.south = goto("wean.3.600");
-// WEAN_ROOMS.find(r => r.id == "wean.3.400")!.dirs.south = goto("wean.3.700");
-// delete WEAN_ROOMS.find(r => r.id == "wean.3.300")!.dirs.south;
-// delete WEAN_ROOMS.find(r => r.id == "wean.3.400")!.dirs.north;
-
-// WEAN_ROOMS.find(r => r.id == "wean.stairs.a2.1")!.dirs.up = goto("wean.stairs.a2.1_2");
-// WEAN_ROOMS.find(r => r.id == "wean.stairs.a2.2")!.dirs.down = goto("wean.stairs.a2.1_2");
-// delete WEAN_ROOMS.find(r => r.id == "wean.stairs.a2.1")!.dirs.down;
-
-// delete WEAN_ROOMS.find(r => r.id == "wean.stairs.b.3")!.dirs.down;
-// delete WEAN_ROOMS.find(r => r.id == "wean.stairs.b.8")!.dirs.up;
-
-// delete WEAN_ROOMS.find(r => r.id == "wean.stairs.d.3")!.dirs.down;
-
-// delete WEAN_ROOMS.find(r => r.id == "wean.1.north")!.dirs.down;
-// delete WEAN_ROOMS.find(r => r.id == "wean.8.north")!.dirs.up;
-
-// WEAN_ROOMS.find(r => r.id == "wean.5.south")!.dirs.south = goto("la_prima");
-
-// WEAN_ROOMS.find(r => r.id == "wean.4.400")!.dirs.east = goto("liminal.ramp");
-// WEAN_ROOMS.find(r => r.id == "wean.4.400")!.dirs.down = goto("liminal.ramp");
-// WEAN_ROOMS.find(r => r.id == "wean.5.400")!.dirs.east = goto("liminal.ground");
-// WEAN_ROOMS.find(r => r.id == "wean.6.400")!.dirs.east = goto("liminal.6");
-// WEAN_ROOMS.find(r => r.id == "wean.7.400")!.dirs.east = goto("liminal.7");
-// WEAN_ROOMS.find(r => r.id == "wean.8.400")!.dirs.east = goto("liminal.8");

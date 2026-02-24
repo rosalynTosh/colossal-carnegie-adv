@@ -29,6 +29,7 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "la_prima",
         "dirs": {
+            "north": "wean.5.south",
             "south": "outside_la_prima"
         }
     },
@@ -312,7 +313,8 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
         "dirs": {
             "northeast": "doherty.b.under_stairs.art",
             "east": "doherty.b.mall_side_corridor.mural",
-            "west": "liminal.ramp"
+            "west": "liminal.ramp",
+            "up": "liminal.ramp"
         }
     },
     {
@@ -567,6 +569,8 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "liminal.ramp",
         "dirs": {
+            "west": "wean.4.400",
+            "up": "wean.4.400",
             "east": "doherty.b.mall_side_corridor.steam_tunnels",
             "down": "doherty.b.mall_side_corridor.steam_tunnels"
         }
@@ -574,12 +578,14 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "liminal.ground",
         "dirs": {
+            "west": "wean.5.400",
             "east": "doherty.a.west"
         }
     },
     {
         "id": "liminal.6",
         "dirs": {
+            "west": "wean.6.400",
             "east": "doherty.1.west",
             "up": "liminal.7"
         }
@@ -587,6 +593,7 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "liminal.7",
         "dirs": {
+            "west": "wean.7.400",
             "up": "liminal.8",
             "down": "liminal.6"
         }
@@ -594,12 +601,14 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "liminal.8",
         "dirs": {
+            "west": "wean.8.400",
             "down": "liminal.7"
         }
     },
     {
         "id": "steam_tunnel.wean",
         "dirs": {
+            "west": "wean.4.703",
             "east": "steam_tunnel.hot_nut",
             "up": "steam_tunnel.hot_nut"
         }
@@ -695,7 +704,8 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "wean.1.300",
         "dirs": {
-            "west": "wean.1.lobby"
+            "west": "wean.1.lobby",
+            "north": "wean.stairs.a2.1"
         }
     },
     {
@@ -717,7 +727,9 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     {
         "id": "wean.2.300",
         "dirs": {
-            "west": "wean.2.lobby"
+            "west": "wean.2.lobby",
+            "north": "wean.stairs.a2.2",
+            "east": "wean.2.340"
         }
     },
     {
@@ -741,7 +753,8 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
             "west": "wean.3.200",
             "east": "wean.3.300",
             "south": "wean.3.south",
-            "down": "wean.2.lobby"
+            "down": "wean.2.lobby",
+            "up": "wean.4.north"
         }
     },
     {
@@ -758,6 +771,7 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
         "dirs": {
             "east": "wean.3.south",
             "north": "wean.3.200",
+            "south": "wean.stairs.d.3",
             "southwest": "wean.3.scs_print_room"
         }
     },
@@ -773,13 +787,15 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
         "id": "wean.3.300",
         "dirs": {
             "west": "wean.3.north",
+            "north": "wean.stairs.a2.3",
             "east": "wean.3.balcony"
         }
     },
     {
         "id": "wean.3.400",
         "dirs": {
-            "west": "wean.3.400_by_700"
+            "west": "wean.3.400_by_700",
+            "south": "wean.stairs.b.3"
         }
     },
     {
@@ -795,7 +811,8 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
         "dirs": {
             "south": "wean.3.600",
             "east": "wean.3.700",
-            "north": "wean.3.south"
+            "north": "wean.3.south",
+            "west": "wean.stairs.c1.3"
         }
     },
     {
@@ -840,7 +857,9 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
     },
     {
         "id": "wean.3.spooky_closet",
-        "dirs": {}
+        "dirs": {
+            "west": "wean.stairs.c2.3"
+        }
     },
     {
         "id": "wean.3.chiller_plant",
@@ -848,6 +867,577 @@ export const ROOM_NODE_SPECS: NodeSpec[] = [
             "south": "wean.3.fms_office",
             "up": "wean.3.fms_office",
             "down": "wean.2.chiller_plant"
+        }
+    },
+    {
+        "id": "wean.4.north",
+        "dirs": {
+            "west": "wean.4.200",
+            "east": "wean.4.300",
+            "south": "wean.4.south",
+            "down": "wean.3.north",
+            "up": "wean.5.north"
+        }
+    },
+    {
+        "id": "wean.4.south",
+        "dirs": {
+            "west": "wean.4.100",
+            "east": "wean.4.sorrels",
+            "north": "wean.4.north",
+            "south": "wean.4.600"
+        }
+    },
+    {
+        "id": "wean.4.100",
+        "dirs": {
+            "east": "wean.4.south",
+            "north": "wean.4.200",
+            "south": "wean.stairs.d.4"
+        }
+    },
+    {
+        "id": "wean.4.200",
+        "dirs": {
+            "east": "wean.4.north",
+            "south": "wean.4.100"
+        }
+    },
+    {
+        "id": "wean.4.300",
+        "dirs": {
+            "west": "wean.4.north",
+            "south": "wean.4.400",
+            "north": "wean.stairs.a2.4"
+        }
+    },
+    {
+        "id": "wean.4.400",
+        "dirs": {
+            "north": "wean.4.300",
+            "south": "wean.stairs.b.4",
+            "east": "liminal.ramp",
+            "down": "liminal.ramp"
+        }
+    },
+    {
+        "id": "wean.4.600",
+        "dirs": {
+            "north": "wean.4.south",
+            "south": "wean.4.600_south",
+            "east": "wean.4.700",
+            "west": "wean.stairs.c1.4"
+        }
+    },
+    {
+        "id": "wean.4.600_south",
+        "dirs": {
+            "north": "wean.4.600",
+            "east": "wean.4.700_south",
+            "west": "wean.stairs.c2.4"
+        }
+    },
+    {
+        "id": "wean.4.700",
+        "dirs": {
+            "west": "wean.4.600",
+            "southwest": "wean.4.700_south",
+            "east": "wean.4.703"
+        }
+    },
+    {
+        "id": "wean.4.700_south",
+        "dirs": {
+            "northeast": "wean.4.700",
+            "west": "wean.4.600_south",
+            "north": "wean.4.706"
+        }
+    },
+    {
+        "id": "wean.4.sorrels",
+        "dirs": {
+            "west": "wean.4.south",
+            "east": "wean.4.400"
+        }
+    },
+    {
+        "id": "wean.4.703",
+        "dirs": {
+            "east": "steam_tunnel.wean",
+            "west": "wean.4.700"
+        }
+    },
+    {
+        "id": "wean.4.706",
+        "dirs": {
+            "south": "wean.4.700_south"
+        }
+    },
+    {
+        "id": "wean.5.north",
+        "dirs": {
+            "west": "wean.5.200_clusters",
+            "east": "wean.5.300",
+            "south": "wean.5.south",
+            "down": "wean.4.north",
+            "up": "wean.6.north"
+        }
+    },
+    {
+        "id": "wean.5.south",
+        "dirs": {
+            "west": "wean.5.100",
+            "east": "wean.5.400",
+            "north": "wean.5.north",
+            "south": "la_prima"
+        }
+    },
+    {
+        "id": "wean.5.100",
+        "dirs": {
+            "east": "wean.5.south",
+            "north": "wean.5.200",
+            "south": "wean.stairs.d.5"
+        }
+    },
+    {
+        "id": "wean.5.200",
+        "dirs": {
+            "east": "wean.5.200_clusters",
+            "south": "wean.5.100"
+        }
+    },
+    {
+        "id": "wean.5.300",
+        "dirs": {
+            "west": "wean.5.north",
+            "south": "wean.5.400",
+            "north": "wean.stairs.a2.5"
+        }
+    },
+    {
+        "id": "wean.5.400",
+        "dirs": {
+            "west": "wean.5.south",
+            "north": "wean.5.300",
+            "south": "wean.stairs.b.5",
+            "northwest": "wean.5.403",
+            "east": "liminal.ground"
+        }
+    },
+    {
+        "id": "wean.5.200_clusters",
+        "dirs": {
+            "north": "wean.5.202",
+            "south": "wean.5.201",
+            "southwest": "wean.5.207",
+            "east": "wean.5.north"
+        }
+    },
+    {
+        "id": "wean.5.201",
+        "dirs": {
+            "north": "wean.5.200_clusters"
+        }
+    },
+    {
+        "id": "wean.5.202",
+        "dirs": {
+            "south": "wean.5.200_clusters"
+        }
+    },
+    {
+        "id": "wean.5.207",
+        "dirs": {
+            "northeast": "wean.5.200_clusters"
+        }
+    },
+    {
+        "id": "wean.5.403",
+        "dirs": {
+            "southeast": "wean.5.400"
+        }
+    },
+    {
+        "id": "wean.6.north",
+        "dirs": {
+            "west": "wean.6.200",
+            "east": "wean.6.300",
+            "south": "wean.6.south",
+            "down": "wean.5.north",
+            "up": "wean.7.north"
+        }
+    },
+    {
+        "id": "wean.6.south",
+        "dirs": {
+            "west": "wean.6.100",
+            "east": "wean.6.400",
+            "north": "wean.6.north",
+            "south": "wean.6.parapet",
+            "up": "wean.6.parapet"
+        }
+    },
+    {
+        "id": "wean.6.100",
+        "dirs": {
+            "east": "wean.6.south",
+            "north": "wean.6.200",
+            "south": "wean.stairs.d.6"
+        }
+    },
+    {
+        "id": "wean.6.200",
+        "dirs": {
+            "east": "wean.6.north",
+            "south": "wean.6.100"
+        }
+    },
+    {
+        "id": "wean.6.300",
+        "dirs": {
+            "west": "wean.6.north",
+            "south": "wean.6.400",
+            "north": "wean.stairs.a2.6"
+        }
+    },
+    {
+        "id": "wean.6.400",
+        "dirs": {
+            "west": "wean.6.south",
+            "north": "wean.6.300",
+            "south": "wean.stairs.b.6",
+            "east": "liminal.6"
+        }
+    },
+    {
+        "id": "wean.6.parapet",
+        "dirs": {
+            "north": "wean.6.south"
+        }
+    },
+    {
+        "id": "wean.7.north",
+        "dirs": {
+            "west": "wean.7.200",
+            "east": "wean.7.300",
+            "south": "wean.7.south",
+            "down": "wean.6.north",
+            "up": "wean.8.north"
+        }
+    },
+    {
+        "id": "wean.7.south",
+        "dirs": {
+            "west": "wean.7.100",
+            "east": "wean.7.400",
+            "north": "wean.7.north",
+            "south": "wean.7.500"
+        }
+    },
+    {
+        "id": "wean.7.100",
+        "dirs": {
+            "east": "wean.7.south",
+            "north": "wean.7.200",
+            "south": "wean.stairs.d.7"
+        }
+    },
+    {
+        "id": "wean.7.200",
+        "dirs": {
+            "east": "wean.7.north",
+            "south": "wean.7.100"
+        }
+    },
+    {
+        "id": "wean.7.300",
+        "dirs": {
+            "west": "wean.7.north",
+            "south": "wean.7.400",
+            "north": "wean.stairs.a2.7"
+        }
+    },
+    {
+        "id": "wean.7.400",
+        "dirs": {
+            "west": "wean.7.south",
+            "north": "wean.7.300",
+            "south": "wean.stairs.b.7",
+            "east": "liminal.7"
+        }
+    },
+    {
+        "id": "wean.7.500",
+        "dirs": {
+            "west": "outside_la_prima",
+            "north": "wean.7.south"
+        }
+    },
+    {
+        "id": "wean.8.north",
+        "dirs": {
+            "west": "wean.8.200",
+            "east": "wean.8.300",
+            "south": "wean.8.south",
+            "down": "wean.7.north"
+        }
+    },
+    {
+        "id": "wean.8.south",
+        "dirs": {
+            "west": "wean.8.100",
+            "east": "wean.8.400_outside_427",
+            "north": "wean.8.north"
+        }
+    },
+    {
+        "id": "wean.8.100",
+        "dirs": {
+            "east": "wean.8.south",
+            "north": "wean.8.200",
+            "south": "wean.stairs.d.8"
+        }
+    },
+    {
+        "id": "wean.8.200",
+        "dirs": {
+            "east": "wean.8.north",
+            "south": "wean.8.100"
+        }
+    },
+    {
+        "id": "wean.8.300",
+        "dirs": {
+            "west": "wean.8.north",
+            "south": "wean.8.400",
+            "north": "wean.stairs.a2.8"
+        }
+    },
+    {
+        "id": "wean.8.400",
+        "dirs": {
+            "west": "wean.8.400_outside_427",
+            "north": "wean.8.300",
+            "south": "wean.stairs.b.8",
+            "east": "liminal.8"
+        }
+    },
+    {
+        "id": "wean.8.400_outside_427",
+        "dirs": {
+            "west": "wean.8.south",
+            "east": "wean.8.400",
+            "north": "wean.8.427"
+        }
+    },
+    {
+        "id": "wean.8.427",
+        "dirs": {
+            "south": "wean.8.400_outside_427"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.1",
+        "dirs": {
+            "up": "wean.stairs.a2.1_1_2",
+            "south": "wean.1.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.1_1_2",
+        "dirs": {
+            "down": "wean.stairs.a2.1",
+            "up": "wean.stairs.a2.2"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.2",
+        "dirs": {
+            "down": "wean.stairs.a2.1_1_2",
+            "up": "wean.stairs.a2.3",
+            "south": "wean.2.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.3",
+        "dirs": {
+            "down": "wean.stairs.a2.2",
+            "up": "wean.stairs.a2.4",
+            "south": "wean.3.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.4",
+        "dirs": {
+            "down": "wean.stairs.a2.3",
+            "up": "wean.stairs.a2.5",
+            "south": "wean.4.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.5",
+        "dirs": {
+            "down": "wean.stairs.a2.4",
+            "up": "wean.stairs.a2.6",
+            "south": "wean.5.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.6",
+        "dirs": {
+            "down": "wean.stairs.a2.5",
+            "up": "wean.stairs.a2.7",
+            "south": "wean.6.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.7",
+        "dirs": {
+            "down": "wean.stairs.a2.6",
+            "up": "wean.stairs.a2.8",
+            "south": "wean.7.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.8",
+        "dirs": {
+            "down": "wean.stairs.a2.7",
+            "up": "wean.stairs.a2.9",
+            "south": "wean.8.300"
+        }
+    },
+    {
+        "id": "wean.stairs.a2.9",
+        "dirs": {
+            "down": "wean.stairs.a2.8"
+        }
+    },
+    {
+        "id": "wean.stairs.b.3",
+        "dirs": {
+            "up": "wean.stairs.b.4",
+            "north": "wean.3.400"
+        }
+    },
+    {
+        "id": "wean.stairs.b.4",
+        "dirs": {
+            "down": "wean.stairs.b.3",
+            "up": "wean.stairs.b.5",
+            "north": "wean.4.400"
+        }
+    },
+    {
+        "id": "wean.stairs.b.5",
+        "dirs": {
+            "down": "wean.stairs.b.4",
+            "up": "wean.stairs.b.6",
+            "north": "wean.5.400"
+        }
+    },
+    {
+        "id": "wean.stairs.b.6",
+        "dirs": {
+            "down": "wean.stairs.b.5",
+            "up": "wean.stairs.b.7",
+            "north": "wean.6.400"
+        }
+    },
+    {
+        "id": "wean.stairs.b.7",
+        "dirs": {
+            "down": "wean.stairs.b.6",
+            "up": "wean.stairs.b.8",
+            "north": "wean.7.400"
+        }
+    },
+    {
+        "id": "wean.stairs.b.8",
+        "dirs": {
+            "down": "wean.stairs.b.7",
+            "north": "wean.8.400"
+        }
+    },
+    {
+        "id": "wean.stairs.c1.3",
+        "dirs": {
+            "up": "wean.stairs.c1.4",
+            "east": "wean.3.500"
+        }
+    },
+    {
+        "id": "wean.stairs.c1.4",
+        "dirs": {
+            "down": "wean.stairs.c1.3",
+            "east": "wean.4.600"
+        }
+    },
+    {
+        "id": "wean.stairs.c2.3",
+        "dirs": {
+            "up": "wean.stairs.c2.4",
+            "east": "wean.3.spooky_closet"
+        }
+    },
+    {
+        "id": "wean.stairs.c2.4",
+        "dirs": {
+            "down": "wean.stairs.c2.3",
+            "east": "wean.4.600_south"
+        }
+    },
+    {
+        "id": "wean.stairs.d.3",
+        "dirs": {
+            "up": "wean.stairs.d.4",
+            "north": "wean.3.100"
+        }
+    },
+    {
+        "id": "wean.stairs.d.4",
+        "dirs": {
+            "down": "wean.stairs.d.3",
+            "up": "wean.stairs.d.5",
+            "north": "wean.4.100"
+        }
+    },
+    {
+        "id": "wean.stairs.d.5",
+        "dirs": {
+            "down": "wean.stairs.d.4",
+            "up": "wean.stairs.d.6",
+            "north": "wean.5.100"
+        }
+    },
+    {
+        "id": "wean.stairs.d.6",
+        "dirs": {
+            "down": "wean.stairs.d.5",
+            "up": "wean.stairs.d.7",
+            "north": "wean.6.100"
+        }
+    },
+    {
+        "id": "wean.stairs.d.7",
+        "dirs": {
+            "down": "wean.stairs.d.6",
+            "up": "wean.stairs.d.8",
+            "north": "wean.7.100"
+        }
+    },
+    {
+        "id": "wean.stairs.d.8",
+        "dirs": {
+            "down": "wean.stairs.d.7",
+            "up": "wean.stairs.d.9",
+            "north": "wean.8.100"
+        }
+    },
+    {
+        "id": "wean.stairs.d.9",
+        "dirs": {
+            "down": "wean.stairs.d.8"
         }
     }
 ];
