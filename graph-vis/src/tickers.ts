@@ -42,9 +42,9 @@ export function physicsTicker(nodes: MovingNode[], ts: number, k: number, cof: n
             other.dy *= cof ** ts;
             other.dz *= cof ** ts;
 
-            other.dx += unitDir.x * k * dist ** 2 * ts;
-            other.dy += unitDir.y * k * dist ** 2 * ts;
-            other.dz += unitDir.z * k * dist ** 2 * ts;
+            other.dx += unitDir.x * k * dist * ts;
+            other.dy += unitDir.y * k * dist * ts;
+            other.dz += unitDir.z * k * dist * ts;
         }
     }
 
