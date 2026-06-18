@@ -5,9 +5,9 @@ import { basicRoom, goto, Room, say } from "../rooms";
 //     return n + (n >= 11 && n <= 13 ? "th" : n == 1 ? "st" : n == 2 ? "nd" : n == 3 ? "rd" : "th");
 // }
 
-function weanRoom(floor: number, idPart: string, short: string, long: string, dirs: Room["dirs"], items: Item[] = [], itemStrs: { [itemId: string]: string } = {}): Room {
+function weanRoom(floor: number, idPart: string | null, short: string, long: string, dirs: Room["dirs"], items: Item[] = [], itemStrs: { [itemId: string]: string } = {}): Room {
     return basicRoom(
-        "wean." + floor + "." + idPart,
+        "wean." + floor + (idPart === null ? "" : "." + idPart),
         short,
         long,
         dirs,
@@ -286,7 +286,7 @@ export const WEAN_ROOMS: Room[] = [
         3,
         "600",
         "Wean 3600 Corridor",
-        "You're in the northern half of a corridor deep under the Mall. The other side is locked behind wooden swinging doors. This is the site of the shitbit: a trove of cracked LCD screens, orphaned circuit boards, and outdated cables. The Office of Disability Resources has an office to your west. The 3rd floor lobby is several twists and turns to your north.",
+        "You're in the northern half of a corridor deep under the Mall. The other side is locked behind wooden swinging doors. This is the site of the shitbin: a trove of cracked LCD screens, orphaned circuit boards, and outdated cables. The Office of Disability Resources has an office to your west. The 3rd floor lobby is several twists and turns to your north.",
         {
             north: goto("wean.3.500"),
             south: say("The doors are locked."),
@@ -810,6 +810,165 @@ export const WEAN_ROOMS: Room[] = [
     ),
     
     // 9
+
+    weanRoom(
+        9,
+        "lobby",
+        "Wean 9",
+        "You find yourself in a small room with a high ceiling. The space opens into a large mechanical penthouse to your south. A door with a warning about non-ionizing radiation sits to your west. A door to stairwell A2 is to your north.",
+        {
+            south: goto("wean.9.by_roof"),
+            north: goto("wean.stairs.a2.9")
+        }
+    ),
+    weanRoom(
+        9,
+        "by_roof",
+        "Wean 9",
+        "You're on the far east end of a large mechanical penthouse. You can pass through a chain link gate to your north, through a pair of double doors to your east, or further into the penthouse to your west.",
+        {
+            north: goto("wean.9.lobby"),
+            east: goto("wean.9.ladder"),
+            west: goto("wean.9.c_mmp")
+        }
+    ),
+    weanRoom(
+        9,
+        "c_mmp",
+        "Wean 9: C.mmp Cage",
+        "You're on the east side of a large mechanical penthouse. To your north is a metal grate cage containing C.mmp, a multiprocessor computer system built in 1972 from 16 PDP-11s. You can go east or west along the row of storage cages.",
+        {
+            east: goto("wean.9.by_roof"),
+            west: goto("wean.9.inside_ladder")
+        }
+    ),
+    weanRoom(
+        9,
+        "inside_ladder",
+        "Wean 9",
+        "You're in the center of a large mechanical penthouse. A ladder ascends from here to an unlocked hatch. You observe HVAC machines with windows into bright blue glowing chambers. You can go east or west.",
+        {
+            up: goto("wean.10.center"),
+            east: goto("wean.9.c_mmp"),
+            west: goto("wean.9.west")
+        }
+    ),
+    weanRoom(
+        9,
+        "west",
+        "Wean 9",
+        "You're on the west end of a large mechanical penthouse. A door sits to your southwest. You can go east within the penthouse.",
+        {
+            southwest: goto("wean.9.southwest_roof"),
+            east: goto("wean.9.inside_ladder")
+        }
+    ),
+    weanRoom(
+        9,
+        "ladder",
+        "Wean 9: Roof",
+        "You find yourself on the roof of Wean Hall. A pair of double doors to the inside sit to your west. A ladder with sturdy square rungs ascends the wall. You can go south along a narrow section of the building's east roof, flanked on one side by the penthouse wall and on the other by concrete sheds containing cellular equipment.",
+        {
+            west: goto("wean.9.by_roof"),
+            up: goto("wean.10.two_ladders"),
+            south: goto("wean.9.camera")
+        }
+    ),
+    weanRoom(
+        9,
+        "camera",
+        "Wean 9: Roof",
+        "You stand on the southeast corner of the roof of Wean Hall, overlooking the Mall. In front of you is a domed security camera hanging off the side of the building. You can go north or west on the roof.",
+        {
+            north: goto("wean.9.ladder"),
+            west: goto("wean.9.over_turtle")
+        }
+    ),
+    weanRoom(
+        9,
+        "over_turtle",
+        "Wean 9: Roof",
+        "You stand on the roof of Wean Hall under the slanty bits of its roof. You can see the top of the turtle head, which is uniformly brown, and the Mall sprawling out below you. You can go east or west.",
+        {
+            east: goto("wean.9.camera"),
+            west: goto("wean.9.southwest_roof")
+        }
+    ),
+    weanRoom(
+        9,
+        "southwest_roof",
+        "Wean 9: Roof",
+        "You find yourself on a large, flat section of the roof of Wean Roof. The top of staircase D protrudes from the corner of the building. It has a door, which is to your south. You can enter the penthouse through a door to your northeast. The rest of the roof is to your east.",
+        {
+            south: goto("wean.stairs.d.9"),
+            northeast: goto("wean.9.west"),
+            east: goto("wean.9.over_turtle")
+        }
+    ),
+    weanRoom(
+        10,
+        "two_ladders",
+        "Wean 10: Two ladders",
+        "You're on a small square of concrete overlooking two sections of Wean's lower roof. There's one short ladder going up to your south and one long ladder going up to your north. To your east, a ladder descends back down.",
+        {
+            north: goto("wean.11"),
+            south: goto("wean.10.east"),
+            up: say("North or south?"),
+            down: goto("wean.9.ladder"),
+            east: goto("wean.9.ladder")
+        }
+    ),
+    weanRoom(
+        10,
+        "east",
+        "Wean 10: Roof",
+        "You're on the east side of the roof of Wean Hall's penthouse. You have an unparalleled view of campus. It's relatively barren, but you note some solar panels and HVAC equipment. You can descend a ladder to your north, or continue on the roof to the west.",
+        {
+            north: goto("wean.10.two_ladders"),
+            down: goto("wean.10.two_ladders"),
+            west: goto("wean.10.center")
+        }
+    ),
+    weanRoom(
+        10,
+        "center",
+        "Wean 10: Roof",
+        "You're in the center of the roof of Wean Hall's penthouse. A large area nearby is raised up onto a platform to cover numerous HVAC ducts. A hatch covers a ladder descending into the penthouse. You can go north, east, or west.",
+        {
+            north: goto("wean.10.jacuzzi"),
+            east: goto("wean.10.east"),
+            west: goto("wean.10.west"),
+            down: goto("wean.9.inside_ladder")
+        }
+    ),
+    weanRoom(
+        10,
+        "west",
+        "Wean 10: Roof",
+        "You're on the west side of the roof of Wean Hall's penthouse. You note some sort of tripod which has tipped over, but not much else. You can go east.",
+        {
+            east: goto("wean.10.center")
+        }
+    ),
+    weanRoom(
+        10,
+        "jacuzzi",
+        "Wean 10: Roof",
+        "You're in a strange part of Wean's roof, sunken below the rest. It almost resembles a jacuzzi, if it were to be filled with water. This would be a sick place to host a party.",
+        {
+            south: goto("wean.10.center")
+        }
+    ),
+    weanRoom(
+        11,
+        null,
+        "Wean 11",
+        "You're now on the highest part of Wean's roof. You're surrounded on all sides by high-power cellular and radio antennas. Your core becomes suspiciously warm. Good thing you weren't planning on having kids. The ladder down is to your south.", // WARM COFFEE
+        {
+            south: goto("wean.10.two_ladders"),
+            down: goto("wean.10.two_ladders")
+        }
+    ),
 
     // Stair A2
 
